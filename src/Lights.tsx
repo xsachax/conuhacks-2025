@@ -11,7 +11,7 @@ export default function Lights() {
       <directionalLight
         ref={lightRef}
         castShadow
-        position={[4, 4, 1]}
+        position={[-10, 4, 1]}
         intensity={1}
         shadow-mapSize={[2048, 2048]}
         shadow-camera-near={1}
@@ -29,7 +29,7 @@ export default function Lights() {
       <hemisphereLight color="#ffffff" groundColor="#8d7c7c" intensity={0.75} />
 
       {/* Fill light from the opposite side */}
-      <directionalLight position={[-5, 5, -5]} intensity={0.5} color="#b5d6ff" />
+      <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#b5d6ff" />
     </>
   );
 }

@@ -28,10 +28,10 @@ export default function Model(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/models/heaven-transformed.glb") as GLTFResult;
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.geo1_Wood_0.geometry} material={materials.PaletteMaterial001} scale={0.15} position={[3.653, -0.178, -2.635]} />
-      <mesh geometry={nodes.Terrain_Water1_0.geometry} material={materials.PaletteMaterial002} scale={0.15} position={[3.653, -0.178, -2.635]} />
-      <mesh geometry={nodes.Trees_Green2_0.geometry} material={materials.PaletteMaterial003} scale={0.15} position={[3.653, -0.178, -2.635]} />
-      <mesh geometry={nodes.Trees_Trunk_0.geometry} material={nodes.Trees_Trunk_0.material} scale={0.15} position={[3.653, -0.178, -2.635]} />
+      <mesh geometry={nodes.geo1_Wood_0.geometry} material={materials.PaletteMaterial001} scale={0.5} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Terrain_Water1_0.geometry} material={materials.PaletteMaterial002} scale={0.5} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Trees_Green2_0.geometry} material={materials.PaletteMaterial003} scale={0.5} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Trees_Trunk_0.geometry} material={nodes.Trees_Trunk_0.material} scale={0.5} position={[-10, -1, -2.635]} />
     </group>
   );
 }
