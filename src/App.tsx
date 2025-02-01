@@ -17,6 +17,7 @@ export default function App() {
         timeStep="vary"
         // debug
       >
+        <Lights />
         <Suspense fallback={null}>
           <Character />
           {/* <PerspectiveCamera makeDefault position={[10, 200, 30]} rotation={[-Math.PI/2, 0, Math.PI]} /> */}

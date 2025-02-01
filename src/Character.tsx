@@ -28,8 +28,6 @@ type ActionName =
 export default function GameCharacter() {
   const characterRef = useRef<Group>(null);
   const [position, setPosition] = useState<Vector3>(new Vector3(-42, -2, -21));
-  const { currentDialog } = useDialogStore();
-  const { isOpen } = usePhoneStore();
 
   const keyboardMap = [
     { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -54,7 +52,6 @@ export default function GameCharacter() {
     if (characterRef.current) {
       const worldPosition = new Vector3();
       characterRef.current.getWorldPosition(worldPosition);
-      // console.log(worldPosition.y)
       if (worldPosition.y < -15) {
         setPosition(new Vector3(-42, -2, -21));
       }
@@ -62,7 +59,7 @@ export default function GameCharacter() {
   });
 
   return (
-    <KeyboardControls map={currentDialog ? [] : isOpen ? [] : keyboardMap}>
+    <KeyboardControls map={keyboardMap}>
       <Ecctrl
         position={position}
         mode="FixedCamera"
