@@ -118,7 +118,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
   const [page, setPage] = useState(1);
   const [age, setAge] = useState("18");
   const [status, setStatus] = useState("Undergrad Student");
-  const [goal, setGoal] = useState("goal");
+  const [goal, setGoal] = useState("");
 
   const handleGameStart = () => {
     submitAnswers({ a1: age, a2: status, a3: goal });
@@ -146,7 +146,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
             PATHFINDER
           </div>
           <button className="mt-4 w-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(2)}>
-            Start
+            START
           </button>
         </div>
       ) : (
@@ -195,7 +195,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
             </div>
           </form>
           <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={handleGameStart}>
-            Start
+            START
           </button>
         </div>
       )}
@@ -244,7 +244,7 @@ function ResultsScreen() {
         </div>
       ) : (
         page === 3 && (
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
             <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
               <div className="w-1/3">
                 <CircularProgressBar percentage={gameResults.accuracy1} />

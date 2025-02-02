@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,8 +21,10 @@
     "r3f-perf": "^7.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-flow-renderer": "^10.3.17",
     "react-simple-typewriter": "^5.0.1",
     "react-spinners": "^0.15.0",
+    "react-tree-graph": "^8.0.3",
     "tailwindcss": "^4.0.3",
     "three": "^0.173.0",
     "zustand": "^5.0.3"

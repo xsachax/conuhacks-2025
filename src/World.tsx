@@ -25,7 +25,7 @@ export default function World() {
       <Garfield position={[1.5, -10.1, -20.89]} rotation={[0, 4.2, 0]} />
       <Krabs position={[-55, -11.9, -10]} rotation={[0, -4.3, 0]} />
       <Yoda position={[-78.6, -11.87, 35.0]} rotation={[0, -4.3, 0]} />
-      <Glow position={[-45, -8, 50.0]} rotation={[0, 0, 0]} />
+      {isGameReadyToEnd && <Glow position={[-45, -8, 50.0]} rotation={[0, 0, 0]} />}
     </>
   );
 }
