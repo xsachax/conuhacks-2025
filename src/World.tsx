@@ -19,11 +19,11 @@ export default function World() {
         </RigidBody>
       </group>
       <TranslationHelper position={[0, 0, 0]} />
-      <Horse position={[-22, -12.7, 10]} rotation={[0, 4, 0]} scale={2.5} />
-      <Steve position={[-22, -13.1, 0]} rotation={[0, 4, 0]} scale={2.5} />
-      <Garfield position={[-23, -13.1, -9]} rotation={[0, 5, 0]} scale={2.5} />
-      <Wario position={[-55, -13.2, -10]} rotation={[0, -4.3, 0]} scale={1.5} />
-      <Yoda position={[-55, -12.3, -2]} rotation={[0, -4.3, 0]} scale={0.8} />
+      <Horse position={[-22, -12.7, 10]} rotation={[0, 4, 0]} />
+      <Steve position={[-22, -13.1, 0]} rotation={[0, 4, 0]} />
+      <Garfield position={[-23, -13.1, -9]} rotation={[0, 5, 0]} />
+      <Wario position={[-55, -13.2, -10]} rotation={[0, -4.3, 0]} />
+      <Yoda position={[-55, -12.3, -2]} rotation={[0, -4.3, 0]}  />
     </>
   );
 }

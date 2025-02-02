@@ -23,7 +23,7 @@ type GLTFResult = GLTF & {
 export default function Model(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/models/horse-transformed.glb") as GLTFResult;
   return (
-    <RigidBody colliders="trimesh" lockRotations={true}>
+    <RigidBody colliders="trimesh" lockRotations={true} scale={1.8}>
       <group {...props} dispose={null}>
         <mesh geometry={nodes.horse.geometry} material={materials.PaletteMaterial001} />
       </group>
