@@ -13,7 +13,7 @@ export default function World() {
         </RigidBody>
       </group>
       <TranslationHelper position={[0, 0, 0]} />
-      <Horse position={[-4, -4.01, 20]} rotation={[0, 160, 0]} scale={2} dialog={{}} />
+      <Horse position={[-22, -12.7, 10]} rotation={[0, 4, 0]} scale={2.5} dialog={{}} />
     </>
   );
 }
