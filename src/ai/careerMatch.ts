@@ -86,22 +86,31 @@ export async function getCareerMatchResults(): Promise<{
     };
   }
 }
+
 export async function getRelatedPositions(): Promise<{
   originalJob1: string;
   relatedJob1a: string;
+  relatedJob1aPosting: string;
   relatedJob1b: string;
+  relatedJob1bPosting: string;
   originalJob2: string;
   relatedJob2a: string;
+  relatedJob2aPosting: string;
   relatedJob2b: string;
+  relatedJob2bPosting: string;
   originalJob3: string;
   relatedJob3a: string;
+  relatedJob3aPosting: string;
   relatedJob3b: string;
+  relatedJob3bPosting: string;
 }> {
   const { gameResults } = useGameStore.getState();
 
   const prompt = `
-    Based on the following top 3 career matches and their decision-making criteria, suggest 2 other related positions (potentially promotion, related, etc.) for each:
+    You are an advanced AI trained in career advising and data analysis.
+    Your task is to analyze the user's responses and determine their top 3 best-matching careers.
 
+    **DATA INPUTS:**
     job1: ${gameResults.job1}
     job2: ${gameResults.job2}
     job3: ${gameResults.job3}
@@ -109,6 +118,9 @@ export async function getRelatedPositions(): Promise<{
     criteria2: ${gameResults.criteria2}
     criteria3: ${gameResults.criteria3}
 
+    **INSTRUCTIONS:**
+    - Based on the above jobs (job1, job2, job3) career matches and their decision-making criteria, suggest 2 other related positions of which they would be qualified for.
+    
     Return ONLY the following format with NO extra text, explanations, or formatting:
 
     originalJob1: [Original Career 1]
@@ -118,7 +130,7 @@ export async function getRelatedPositions(): Promise<{
     relatedJob2a: [Related Career 2a]
     relatedJob2b: [Related Career 2b]
     originalJob3: [Original Career 3]
-    relatedJob3b: [Related Career 3b]
+    relatedJob3a: [Related Career 3a]
     relatedJob3b: [Related Career 3b]
   `.trim();
 
@@ -141,30 +153,43 @@ export async function getRelatedPositions(): Promise<{
 
     console.log("Generated Related Positions:", relatedPositions);
 
-    // Ensure that default values are used if any field is missing or undefined
+    const createIndeedUrl = (jobTitle: string) => `https://ca.indeed.com/jobs?q=${jobTitle.replace(/\s+/g, '+')}`;
+
     return {
       originalJob1: gameResults.job1,
-      relatedJob1a: relatedPositions.relatedJob1a || "Senior Software Engineer",
-      relatedJob1b: relatedPositions.relatedJob1b || "Software Engineering Manager",
+      relatedJob1a: relatedPositions.relatedJob1a || "Project Manager",
+      relatedJob1aPosting: createIndeedUrl(relatedPositions.relatedJob1a || "Project Manager"),
+      relatedJob1b: relatedPositions.relatedJob1b || "SCRUM Lead",
+      relatedJob1bPosting: createIndeedUrl(relatedPositions.relatedJob1b || "SCRUM Lead"),
       originalJob2: gameResults.job2,
-      relatedJob2a: relatedPositions.relatedJob2 || "Technical Lead",
-      relatedJob2b: relatedPositions.relatedJob2 || "Data Science Manager",
+      relatedJob2a: relatedPositions.relatedJob2 || "Solution Architect",
+      relatedJob2aPosting: createIndeedUrl(relatedPositions.relatedJob2 || "Solution Architect"),
+      relatedJob2b: relatedPositions.relatedJob2 || "VP Technology",
+      relatedJob2bPosting: createIndeedUrl(relatedPositions.relatedJob2 || "VP Technology"),
       originalJob3: gameResults.job3,
-      relatedJob3a: relatedPositions.relatedJob3 || "Engineering Manager",
-      relatedJob3b: relatedPositions.relatedJob3 || "Product Director",
+      relatedJob3a: relatedPositions.relatedJob3 || "System Design Engineer",
+      relatedJob3aPosting: createIndeedUrl(relatedPositions.relatedJob3 || "System Design Engineer"),
+      relatedJob3b: relatedPositions.relatedJob3 || "Database Administrator",
+      relatedJob3bPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Database Administrator"),
     };
   } catch (error) {
     console.error("Error fetching related positions:", error);
     return {
       originalJob1: gameResults.job1,
-      relatedJob1a: "Senior Software Engineer",
-      relatedJob1b: "Software Engineering Manager",
+      relatedJob1a: "Project Manager",
+      relatedJob1aPosting: "https://ca.indeed.com",
+      relatedJob1b: "SCRUM Lead",
+      relatedJob1bPosting: "https://ca.indeed.com",
       originalJob2: gameResults.job2,
-      relatedJob2a: "Technical Lead",
-      relatedJob2b: "Data Science Manager",
+      relatedJob2a: "Solution Architect",
+      relatedJob2aPosting: "https://ca.indeed.com",
+      relatedJob2b: "VP Technology",
+      relatedJob2bPosting: "https://ca.indeed.com",
       originalJob3: gameResults.job3,
-      relatedJob3a: "Engineering Manager",
-      relatedJob3b: "Product Director",
+      relatedJob3a: "System Design Engineer",
+      relatedJob3aPosting: "https://ca.indeed.com",
+      relatedJob3b: "Database Administrator",
+      relatedJob3bPosting: "https://ca.indeed.com",
     };
   }
 }
