@@ -57,57 +57,53 @@ export default function App() {
         </Physics>
       </Canvas>
       <div
-  style={{
-    position: "absolute",
-    top: 1,
-    right: 1,
-    marginRight: "1%",
-    marginTop: "1%",
-    borderRadius: "8px",
-    width: "30%",
-    height: "30px",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    alignItems: "center",
-  }}
->
-  <div
-    style={{
-      borderRadius: "8px",
-      width: `${progress * 20}%`,
-      height: "100%",
-      backgroundColor: "#3cc85a",
-      transition: "width 0.3s ease-in-out",
-    }}
-  />
-  <span
-    style={{
-      position: "absolute",
-      marginLeft: "10px",
-      color: "#fff",
-      fontWeight: "bold",
-      right: 0, 
-      paddingRight: "10px", 
-    }}
-  >
-    {`${progress * 20}%`}
-  </span>
-</div>
-
+        style={{
+          position: "absolute",
+          top: 1,
+          right: 1,
+          marginRight: "1%",
+          marginTop: "1%",
+          borderRadius: "8px",
+          width: "30%",
+          height: "30px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            borderRadius: "8px",
+            width: `${progress * 20}%`,
+            height: "100%",
+            backgroundColor: "#3cc85a",
+            transition: "width 0.3s ease-in-out",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            marginLeft: "10px",
+            color: "#fff",
+            fontWeight: "bold",
+            right: 0,
+            paddingRight: "10px",
+          }}
+        >
+          {`${progress * 20}%`}
+        </span>
+      </div>
     </>
   );
 }
 
 function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
-  const [age, setAge] = useState("");
-  const [status, setStatus] = useState("");
-  const [goal, setGoal] = useState("");
+  const [page, setPage] = useState(1);
+  const [age, setAge] = useState("18");
+  const [status, setStatus] = useState("Undergrad Student");
+  const [goal, setGoal] = useState("goal");
 
   const handleGameStart = () => {
-    if (age === "" || status === "" || goal === "") {
-      alert("Please fill out all fields");
-      return;
-    }
     submitAnswers({ a1: age, a2: status, a3: goal });
     requestNextCareerPathQuestions();
     setGameStarted(true);
@@ -124,38 +120,68 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
           </Suspense>
         </Canvas>
       </div>
-      <div className="bg-white p-8 rounded-lg">
-        <h1 className="text-4xl font-bold text-center">Welcome to the Adventure</h1>
-        <form className="space-y-4 mt-8">
-          <div>
+      {page === 1 ? (
+        <div className="p-8 rounded-lg flex flex-col gap-4 justify-center items-center">
+          <div
+            className=" text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500"
+            style={{ textShadow: "4px 4px 0 #fff, 8px 8px 0 #000" }}
+          >
+            PATHFINDER
+          </div>
+          <button className="mt-4 w-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(2)}>
+            Start
+          </button>
+        </div>
+      ) : (
+        <div className="bg-white p-8 rounded-lg">
+          <h1 className="text-4xl font-bold text-center">Welcome to the Adventure!</h1>
+          <form className="space-y-4 mt-8">
             <label className="block text-gray-600">Age</label>
-            <input type="text" className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3" placeholder="18" value={age} onChange={(e) => setAge(e.target.value)} />
-          </div>
-          <div>
-            <label className="block text-gray-600">Current Professional Status</label>
-            <input
-              type="text"
-              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
-              placeholder="Student"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block text-gray-600">Career Goal</label>
-            <input
-              type="text"
-              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
-              placeholder="Find Happiness!"
-              value={goal}
-              onChange={(e) => setGoal(e.target.value)}
-            />
-          </div>
-        </form>
-        <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={handleGameStart}>
-          Start
-        </button>
-      </div>
+            <div>
+              <input
+                type="range"
+                className="mt-1 block w-full border-2 border-gray-300 rounded-md p-0"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                min="1"
+                max="100"
+                step="1"
+                style={{ width: "100%" }}
+              />
+              <div className="flex justify-between text-xs text-gray-600">
+                <span>{age}</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-gray-600">Current Professional Status</label>
+              <select className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3" value={status} onChange={(e) => setStatus(e.target.value)}>
+                <option value="Undergrad Student" disabled>
+                  Select status
+                </option>
+                <option value="student">High School Student</option>
+                <option value="student">Undergraduate Student</option>
+                <option value="student">Graduate Student</option>
+                <option value="teacher">New-Grad</option>
+                <option value="admin">Professional</option>
+                <option value="admin">Senior Professional</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-600">Career Goal</label>
+              <input
+                type="text"
+                className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
+                placeholder="Find Happiness!"
+                value={goal}
+                onChange={(e) => setGoal(e.target.value)}
+              />
+            </div>
+          </form>
+          <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={handleGameStart}>
+            Start
+          </button>
+        </div>
+      )}
     </div>
   );
 }
