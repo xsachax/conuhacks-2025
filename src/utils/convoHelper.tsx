@@ -1,66 +1,78 @@
 import { create } from "zustand";
 
-export interface ConvoOption {
-  text: string;
-  next?: Convo | null;
-  action?: () => void;
-  type?: "default" | "slider";
-  min?: number;
-  max?: number;
-  minLabel?: string;
-  maxLabel?: string;
-  sliderValue?: number;
-  onEnd?: () => void;
-}
-
-export interface Convo {
-  text: string;
-  stage: string;
-  character: string;
-  next?: Convo | null;
-  options?: ConvoOption[];
-  onEnd?: () => void;
-}
-
 interface ConvoState {
-  currentConvo: Convo | null;
-  convoHistory: Convo[];
-  sliderValues: Record<string, number>; // Stores slider values by key
-  setConvo: (convo: Convo | null) => void;
-  selectOption: (option: ConvoOption) => void;
-  setSliderValue: (key: string, value: number) => void;
+  convoActive: boolean;
+  currentCharacterName: string;
+  currentPart: number;
+  currentQuestion: number;
+  questions: Record<string, Record<string, string>>;
+  seenCharacters: string[];
+  setConvoActive: (convo: boolean) => void;
   clearConvo: () => void;
+  updateQuestion: (part: string, qNumber: string, question: string) => void;
+  setCurrentQuestion: (question: number) => void;
+  setCurrentPart: (part: number) => void;
 }
 
 export const useConvoStore = create<ConvoState>()((set) => ({
-  currentConvo: null,
-  convoHistory: [],
-  sliderValues: {}, // Store slider values
+  convoActive: false,
+  currentCharacterName: "Bob",
+  currentPart: 1,
+  currentQuestion: 1,
+  seenCharacters: [],
+  questions: {
+    part1: {
+      q1: "Part 1, Question 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      q2: "Part 1, Question 2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      q3: "Part 1, Question 3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    },
+    part2: {
+      q1: "Part 2, Question 1: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+      q2: "Part 2, Question 2: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+      q3: "Part 2, Question 3: Deserunt mollit anim id est laborum.",
+    },
+    part3: {
+      q1: "Part 3, Question 1: Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.",
+      q2: "Part 3, Question 2: Nullam varius, turpis et commodo pharetra, est eros bibendum elit.",
+      q3: "Part 3, Question 3: Velit egestas dui id ornare arcu odio ut sem nulla.",
+    },
+    part4: {
+      q1: "Part 4, Question 1: Amet consectetur adipiscing elit pellentesque habitant morbi tristique.",
+      q2: "Part 4, Question 2: Senectus et netus et malesuada fames ac turpis egestas.",
+      q3: "Part 4, Question 3: Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet.",
+    },
+    part5: {
+      q1: "Part 5, Question 1: Ante in nibh mauris cursus mattis molestie a iaculis.",
+      q2: "Part 5, Question 2: Arcu odio ut sem nulla pharetra diam sit amet.",
+      q3: "Part 5, Question 3: Eget nullam non nisi est sit amet facilisis magna.",
+    },
+  },
 
   // Set the current convo
-  setConvo: (convo) => set({ currentConvo: convo }),
-
-  // Select an option and transition to the next convo or execute an action
-  selectOption: (option) =>
-    set((state) => {
-      if (option.action) {
-        option.action(); // Execute option's action
-      }
-      return {
-        currentConvo: option.next || null, // Move to the next convo, or clear if no next exists
-        convoHistory: state.currentConvo ? [...state.convoHistory, state.currentConvo] : state.convoHistory, // Keep history of visited convos
-      };
-    }),
-
-  // Update a specific slider value by key
-  setSliderValue: (key, value) =>
-    set((state) => ({
-      sliderValues: {
-        ...state.sliderValues,
-        [key]: value,
-      },
-    })),
+  setConvoActive: (newState) => set({ convoActive: newState }),
 
   // Clear the convo and reset history and slider values
-  clearConvo: () => set({ currentConvo: null, convoHistory: [], sliderValues: {} }),
+  clearConvo: (properExit) =>
+    set((prevState) => ({
+      convoActive: false,
+      currentPart: properExit ? prevState.currentPart + 1 : prevState.currentPart,
+      currentQuestion: 1,
+      seenCharacters: properExit ? [...prevState.seenCharacters, prevState.currentCharacterName] : prevState.seenCharacters,
+    })),
+
+  updateQuestion: (part, qNumber, question) =>
+    set((state) => {
+      const newQuestions = { ...state.questions };
+      newQuestions[part][qNumber] = question;
+      return { questions: newQuestions };
+    }),
+
+  setCurrentQuestion: (question) => set({ currentQuestion: question }),
+  setCurrentPart: (part) => set({ currentPart: part }),
+  addSeenCharacter: (character) =>
+    set((state) => {
+      const newSeenCharacters = [...state.seenCharacters, character];
+      return { seenCharacters: newSeenCharacters };
+    }),
+  setCurrentCharacterName: (name) => set({ currentCharacterName: name }),
 }));

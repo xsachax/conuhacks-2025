@@ -13,12 +13,13 @@ import Convo from "./ui/Convo";
 export default function App() {
   //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  const { currentConvo } = useConvoStore();
+  const { convoActive } = useConvoStore();
 
   return (
     <>
       {currentConvo && <Convo />}
       <Canvas shadows camera={{ position: [0, 5, 120], fov: 80}}>
+
         <Perf position="top-left" />
         <Physics
           timeStep="vary"
