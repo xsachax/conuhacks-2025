@@ -10,6 +10,8 @@ import { useConvoStore } from "./utils/convoHelper";
 import Convo from "./ui/Convo";
 import global from "./assets/sfx/global.mp3";
 import { useGameStore } from "./utils/gameStore";
+import Island from "./models/Island";
+import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversationStore";
 
 export default function App() {
   const { convoActive } = useConvoStore();
@@ -97,15 +99,80 @@ export default function App() {
 }
 
 function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
+  const [age, setAge] = useState("");
+  const [status, setStatus] = useState("");
+  const [goal, setGoal] = useState("");
+
+  const handleGameStart = () => {
+    if (age === "" || status === "" || goal === "") {
+      alert("Please fill out all fields");
+      return;
+    }
+    submitAnswers({ a1: age, a2: status, a3: goal });
+    requestNextCareerPathQuestions();
+    setGameStarted(true);
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900">
+    <div className="fixed inset-0 bg-gradient-to-br from-green-950 via-green-900 to-green-950 overflow-auto md:flex md:items-center md:justify-center z-[99999999999] md:overflow-hidden">
+      {/* 3D Background with darker overlay */}
+      <div className="absolute inset-0 -z-20">
+        <div className="absolute inset-0 bg-black/30 z-10" />
+        <Canvas>
+          <Suspense fallback={null}>
+            <StartScreenBackground />
+          </Suspense>
+        </Canvas>
+      </div>
       <div className="bg-white p-8 rounded-lg">
         <h1 className="text-4xl font-bold text-center">Welcome to the Adventure</h1>
-        <p className="text-center">Click anywhere to start the game</p>
-        <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setGameStarted(true)}>
+        <form className="space-y-4 mt-8">
+          <div>
+            <label className="block text-gray-600">Age</label>
+            <input type="text" className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3" placeholder="18" value={age} onChange={(e) => setAge(e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-gray-600">Current Professional Status</label>
+            <input
+              type="text"
+              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
+              placeholder="Student"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600">Career Goal</label>
+            <input
+              type="text"
+              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
+              placeholder="Find Happiness!"
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+            />
+          </div>
+        </form>
+        <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={handleGameStart}>
           Start
         </button>
       </div>
     </div>
+  );
+}
+
+function StartScreenBackground() {
+  const { scene } = useThree();
+
+  useFrame(() => {
+    scene.rotation.y += 0.001; // Slow auto-rotation
+  });
+
+  return (
+    <>
+      <Sky distance={1000} sunPosition={[-100, -1, -10]} inclination={0.5} azimuth={0.25} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
+      <Island scale={10} position={[35, -10, 0]} rotation={[0, 0, 0]} />
+    </>
   );
 }
