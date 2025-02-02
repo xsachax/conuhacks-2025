@@ -29,13 +29,13 @@ export const useGameStore = create<ConvoState>()((set) => ({
     criteria2: "Problem Solving",
     criteria3: "Career Growth",
   },
-  areGameResultsAquired: false,
+  gameResultsAcquired: false,
 
   setProgress: (progress: number) => set({ progress }),
   setGameStarted: (isGameStarted: boolean) => set({ isGameStarted }),
   incrementProgress: () => set((state) => ({ progress: state.progress + 1, isGameReadyToEnd: state.progress + 1 >= 5 })),
   setGameReadyToEnd: (isGameReadyToEnd: boolean) => set({ isGameReadyToEnd }),
   setGameEnded: (isGameEnded: boolean) => set({ isGameEnded }),
-  setGameResultsAquired: (gameResultsAquired: boolean) => set({ gameResultsAquired }),
-  setGameResults: (gameResults: GameResults) => set({ gameResults }),
+  setGameResultsAcquired: (gameResultsAquired: boolean) => set({ gameResultsAquired }),
+  setGameResults: (gameResults: { any }) => set({ gameResults }),
 }));

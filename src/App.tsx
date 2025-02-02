@@ -13,6 +13,7 @@ import { useGameStore } from "./utils/gameStore";
 import Island from "./models/Island";
 import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversationStore";
 import HashLoader from "react-spinners/HashLoader";
+import { getCareerMatchResults } from "./ai/careerMatch";
 
 export default function App() {
   const { convoActive } = useConvoStore();
@@ -205,18 +206,17 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
 function ResultsScreen() {
   const [page, setPage] = useState(1);
 
-  const { gameResults, gameResultsAquired } = useGameStore();
+  const { gameResults, setGameResults, gameResultsAcquired, setGameResultsAcquired } = useGameStore();
 
   const handleFetchResults = () => {
     setPage(2);
-    //TODO
-  };
-
-  useEffect(() => {
-    if (!gameResultsAquired) {
+    getCareerMatchResults().then((results) => {
+      console.log("Results:", results);
+      setGameResults(results);
+      setGameResultsAcquired(true);
       setPage(3);
-    }
-  }, [gameResultsAquired]);
+    });
+  };
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-green-950 via-green-900 to-green-950 overflow-auto md:flex md:items-center md:justify-center z-[99999999999] md:overflow-hidden">
@@ -243,40 +243,42 @@ function ResultsScreen() {
           <HashLoader color="#ffffff" loading={true} size={50} />
         </div>
       ) : (
-        <div className="bg-white p-8 rounded-lg shadow-lg">
-          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
-            <div className="w-1/3">
-              <CircularProgressBar percentage={gameResults.accuracy1} />
+        page === 3 && (
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
+              <div className="w-1/3">
+                <CircularProgressBar percentage={gameResults.accuracy1} />
+              </div>
+              <div className="w-2/3 text-center">
+                <h2 className="text-2xl font-bold mb-2">You're an aspiring</h2>
+                <h1 className="text-5xl font-bold text-blue-600">{gameResults.job1}!</h1>
+              </div>
             </div>
-            <div className="w-2/3 text-center">
-              <h2 className="text-2xl font-bold mb-2">You're an aspiring</h2>
-              <h1 className="text-5xl font-bold text-blue-600">{gameResults.job1}!</h1>
-            </div>
-          </div>
 
-          <div className="flex justify-around mb-12 pb-8 border-b-2 border-gray-200">
-            <div className="text-center flex flex-col items-center">
-              <h2 className="text-xl font-semibold mb-4">{gameResults.job2}</h2>
-              <CircularProgressBar percentage={gameResults.accuracy2} size="small" />
+            <div className="flex justify-around mb-12 pb-8 border-b-2 border-gray-200">
+              <div className="text-center flex flex-col items-center">
+                <h2 className="text-xl font-semibold mb-4">{gameResults.job2}</h2>
+                <CircularProgressBar percentage={gameResults.accuracy2} size="small" />
+              </div>
+              <div className="text-center flex flex-col items-center">
+                <h2 className="text-xl font-semibold mb-4">{gameResults.job3}</h2>
+                <CircularProgressBar percentage={gameResults.accuracy3} size="small" />
+              </div>
             </div>
-            <div className="text-center flex flex-col items-center">
-              <h2 className="text-xl font-semibold mb-4">{gameResults.job3}</h2>
-              <CircularProgressBar percentage={gameResults.accuracy3} size="small" />
+            <h2 className="text-2xl font-bold text-center mb-4">Based on your responses, you value:</h2>
+            <div className="grid grid-cols-3 gap-6">
+              <div className="p-4 border-2 border-green-500 rounded-lg bg-green-50 flex items-center justify-center">
+                <h3 className="text-lg font-semibold text-green-700 text-center">{gameResults.criteria1}</h3>
+              </div>
+              <div className="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 flex items-center justify-center">
+                <h3 className="text-lg font-semibold text-blue-700 text-center">{gameResults.criteria2}</h3>
+              </div>
+              <div className="p-4 border-2 border-purple-500 rounded-lg bg-purple-50 flex items-center justify-center">
+                <h3 className="text-lg font-semibold text-purple-700 text-center">{gameResults.criteria3}</h3>
+              </div>
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-center mb-4">Based on your responses, you value:</h2>
-          <div className="grid grid-cols-3 gap-6">
-            <div className="p-4 border-2 border-green-500 rounded-lg bg-green-50 flex items-center justify-center">
-              <h3 className="text-lg font-semibold text-green-700 text-center">{gameResults.criteria1}</h3>
-            </div>
-            <div className="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 flex items-center justify-center">
-              <h3 className="text-lg font-semibold text-blue-700 text-center">{gameResults.criteria2}</h3>
-            </div>
-            <div className="p-4 border-2 border-purple-500 rounded-lg bg-purple-50 flex items-center justify-center">
-              <h3 className="text-lg font-semibold text-purple-700 text-center">{gameResults.criteria3}</h3>
-            </div>
-          </div>
-        </div>
+        )
       )}
     </div>
   );
