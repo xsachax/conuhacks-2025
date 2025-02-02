@@ -98,11 +98,10 @@ export const useConvoStore = create<ConvoState>()((set) => ({
           },
     })),
 
-  updateQuestion: (part, qNumber, question) =>
-    set((state) => {
-      const newQuestions = { ...state.questions };
-      newQuestions[part][qNumber] = question;
-      return { questions: newQuestions };
+  updateQuestionsByPart: (part, newQuestions) =>
+    set((prevState) => {
+      const newQuestionsObj = { ...prevState.questions, [`part${part}`]: newQuestions };
+      return { questions: newQuestionsObj };
     }),
 
   setCurrentQuestion: (question) => set({ currentQuestion: question }),
