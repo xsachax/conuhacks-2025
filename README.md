@@ -1,3 +1,5 @@
+# Pathfinder
+
 ## 🗺️ Inspiration
 
 Finding a career can be hard. Many students during their time in high school are only exposed to the "popular careers", when very stable, attainable, and good careers can fall through the cracks. We wanted to make a fun 3D experience allowing people to tell their stories and passions, and find a successful and fufilling career. It's not limited to students, our NPCs are equiped to talk to anyone of any age, of any background.
