@@ -1,4 +1,20 @@
-// conversationStore.ts
+/*
+EXAMPLE USE CASE:
+The process is as follows:
+ * 1. Call `startSpeechToText()` to capture the user's answer via speech recognition.
+ * 2. Pass the prompt ID, question, and captured answer to `processAndSaveQARecord()`,
+ *    which will summarize the answer and store the complete QA record in memory.
+ *
+ * @example
+ * async function askAndProcessQuestion(promptId, question) {
+ *   const answer = await startSpeechToText();
+ *   await processAndSaveQARecord(promptId, question, answer);
+ * }
+ * 
+ * 3. To request a new question based on the user's previous answers, call `requestNextCareerPathQuestion()`.
+ *   This function will generate a new question based on the user's previous answers. No need to pass any arguments.
+*/
+
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
 
@@ -24,7 +40,7 @@ export interface CoreInfo {
 
 
 export interface QARecord {
-  promptId: string;
+  promptId?: string;
   question: string;
   answer: string;
   summary: string;
@@ -117,6 +133,31 @@ export async function processAndSaveQARecord(promptId: string, question: string,
     summary,
   };
   useConversationStore.getState().addQARecord(record);
+}
+
+export async function requestNextCareerPathQuestion(): Promise<string> {
+  const store = useConversationStore.getState();
+
+  const previousQuestions = store.qaRecords.map(record => record.question).join("\n");
+  const previousAnswers = store.qaRecords.map(record => record.answer).join("\n");
+
+  const prompt = `
+Based on the user's previous responses and questions, please generate a new, unique question about their career path.
+Do not repeat any questions that have already been asked.
+
+Previously asked questions:
+${previousQuestions}
+
+User responses:
+${previousAnswers}
+
+Next career-related question:
+  `;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const nextQuestion: any = await sendChatMessage(prompt);
+  console.log("Generated next career path question:", nextQuestion);
+  return nextQuestion;
 }
 
 // --------------------
