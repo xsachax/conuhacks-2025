@@ -13,12 +13,12 @@ export async function sendChatMessage(userInput: string): Promise<string> {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: messages,
+      model: 'gpt-4o',
+      messages: messages,
       }),
     });
 

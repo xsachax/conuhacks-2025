@@ -15,6 +15,8 @@ import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversation
 import HashLoader from "react-spinners/HashLoader";
 import { getCareerMatchResults } from "./ai/careerMatch";
 import TreeComponent from "./utils/tree";
+import { incrementPart } from '../ai/conversationStore';
+
 
 export default function App() {
   const { convoActive } = useConvoStore();

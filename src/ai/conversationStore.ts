@@ -191,7 +191,7 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - Do NOT repeat previously asked questions.
     - Do NOT provide any explanations or context.
 
-    **NEXT THREE QUESTIONS (one per line, NO extra text):**
+    **NEXT THREE QUESTIONS (one question per new line, NO extra text before the first question or after the last):**
 `.trim();
 
 
@@ -208,7 +208,6 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 
     const questions = response
       .split("\n")
-      .slice(1)
       .map((q: string) => q.trim())
       .filter((q: string) => q.length > 0);
 
@@ -279,6 +278,7 @@ export async function submitAnswers({ a1, a2, a3 }: { a1: string; a2: string; a3
 
   store.addCareerAnswer(records);
   store.incrementPart();
+  console.log(store.part)
 }
 // --------------------
 // Default Export
