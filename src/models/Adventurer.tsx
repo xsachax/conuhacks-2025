@@ -71,6 +71,12 @@ export default forwardRef(function Model(props: JSX.IntrinsicElements["group"] &
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes, materials } = useGraph(clone) as GLTFResult;
   useAnimations(animations, ref as React.MutableRefObject<THREE.Group>);
+
+  Object.values(materials).forEach((material) => {
+    material.roughness = 0.7; 
+    material.metalness = 0.3; 
+  });
+
   return (
     <group ref={ref} {...props} dispose={null}>
       <group name="Scene">

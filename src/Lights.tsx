@@ -10,8 +10,8 @@ export default function Lights() {
       <directionalLight
         ref={lightRef}
         castShadow
-        position={[-10, 0, 5]} 
-        intensity={2.5}
+        position={[0, 0, -15]} 
+        intensity={3}
         color="#ffffff"
         shadow-mapSize={[4096, 4096]} 
         shadow-camera-near={0.5}
@@ -22,19 +22,16 @@ export default function Lights() {
         shadow-camera-left={-20}
       />
 
-      {/* Ambient light for indirect reflections */}
-      <ambientLight intensity={0.4} color="#cceeff" /> {/* Light blue tint for water glow */}
+      <ambientLight intensity={0.3} color="#cceeff" /> 
 
-      {/* Hemisphere light - Boost sky reflections */}
       <hemisphereLight
         color="#bfe4ff" 
         groundColor="#a5d9ff" 
-        intensity={1.2} 
+        intensity={0.7} 
       />
 
-      {/* Soft blue fill light for enhancing water reflections */}
       <directionalLight
-        position={[5, 5, -5]}
+        position={[-20, 0, 10]}
         intensity={0.8}
         color="#99ccff"
       />

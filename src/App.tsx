@@ -18,14 +18,20 @@ export default function App() {
   return (
     <>
       {convoActive && <Convo />}
-      <Canvas shadows camera={{ position: [0, 5, 12], fov: 80 }}>
+      <Canvas shadows camera={{ position: [0, 5, 120], fov: 80}}>
+
         <Perf position="top-left" />
         <Physics
           timeStep="vary"
           // debug
         >
           <Lights />
-          <Sky distance={0} sunPosition={[-10, 1, 0]} inclination={0.5} azimuth={0.25} />
+          <Sky
+            distance={1000} 
+            sunPosition={[-100, -1, -10]}
+            inclination={0.5}
+            azimuth={0.25}
+          />
           <Suspense fallback={null}>
             <Adventurer />
             <World />
