@@ -5,6 +5,9 @@ import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Adventurer from "./models/Adventurer";
 import { Vector3, type Group } from "three";
 import { useConvoStore } from "./utils/convoHelper";
+import boomSFX from "./assets/sfx/boom.mp3";
+
+const boomAudio = new Audio(boomSFX);
 
 type ActionName =
   | "CharacterArmature|Death"
@@ -62,6 +65,7 @@ export default function GameCharacter() {
       // console.log(worldPosition.y)
       if (worldPosition.y < -15) {
         setPosition(new Vector3(-41.93, -11, -33.13));
+        boomAudio.play();
       }
     }
   });
@@ -72,7 +76,7 @@ export default function GameCharacter() {
   position={position}
   mode="FixedCamera"
   maxVelLimit={5}
-  sprintMult={1.8}
+  sprintMult={3.5}
   animated
   camInitDir={{
     x: Math.PI / 8, 
