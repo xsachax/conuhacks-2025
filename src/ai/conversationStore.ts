@@ -155,6 +155,8 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     You are an expert AI career advisor guiding the user through a structured five-part conversation to identify their best-fit career path.
     This process involves 15 targeted questions over 5 stages, rapidly narrowing down career options.
 
+    The first 3 answers include critical information on the type of person you're talking to.
+
     **CURRENT STAGE: Stage ${currentPart}/5**
     
     **STRICT RULES:**
