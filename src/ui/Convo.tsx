@@ -10,7 +10,7 @@ import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
 import finish from "../sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
-import { requestNextCareerPathQuestions, submitAnswer } from "../ai/conversationStore";
+import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
 
 const finishAudio = new Audio(finish);
 
@@ -46,7 +46,7 @@ export default function Convo() {
       // Part successfully completed
       clearConvo(true);
       finishAudio.play();
-      submitAnswer(answers[`part${currentPart}`]);
+      submitAnswers(answers[`part${currentPart}`]);
       requestNextCareerPathQuestions();
     }
     setInputFieldValue("");
