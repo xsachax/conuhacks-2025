@@ -8,6 +8,9 @@ import steve from "../assets/steve.jpg";
 import wario from "../assets/wario.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
+import finish from "../sfx/finish.mp3";
+
+const finishAudio = new Audio(finish);
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
@@ -39,6 +42,7 @@ export default function Convo() {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       clearConvo(true);
+      finishAudio.play();
     }
     setInputFieldValue("");
     //log all the convo store values
