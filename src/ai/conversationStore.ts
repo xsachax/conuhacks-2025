@@ -175,11 +175,15 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - User responses:
       ${previousAnswers}
 
+    **JIBBERISH HANDLING:**
+    - If the user's responses are unclear, random, or completely unrelated to career discussions, DEFAULT to suggesting careers in Technology.
+    - DO NOT state that you are defaulting to technology. Instead, **immediately generate three real technology career-related questions** as if the user showed interest in tech.
+
     **INSTRUCTIONS:**
     - Use the user’s answers to determine which careers best fit them.
     - By the end of Stage 2, you MUST suggest at least one real career category (e.g., Engineering, Healthcare, Business).
     - By Stage 3, you MUST suggest specific job titles (e.g., Software Engineer, Nurse, Data Scientist).
-    - By Stage 4If the user’s responses align with multiple careers, guide them toward making a choice.
+    - By Stage 4, if the user’s responses align with multiple careers, guide them toward making a choice.
     - By Stage 5, questions should focus on real-world considerations like salary, required education, and job stability.
 
     **GENERATE THE NEXT THREE QUESTIONS STRICTLY FOLLOWING THE FORMAT BELOW:**
@@ -188,7 +192,8 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - Do NOT provide any explanations or context.
 
     **NEXT THREE QUESTIONS (one per line, NO extra text):**
-  `.trim();
+`.trim();
+
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
