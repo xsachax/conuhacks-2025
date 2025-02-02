@@ -220,7 +220,7 @@ function ResultsScreen() {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-green-950 via-green-900 to-green-950 overflow-auto md:flex md:items-center md:justify-center z-[99999999999] md:overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-green-950 via-green-900 to-green-950 overflow-auto flex items-center justify-center z-[9999] md:overflow-hidden">
       {/* 3D Background with darker overlay */}
       <div className="absolute inset-0 -z-20">
         <div className="absolute inset-0 bg-black/30 z-10" />

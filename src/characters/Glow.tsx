@@ -58,6 +58,17 @@ export default function Character({ position, rotation, action }: { position: [n
           }}
           endgame={true}
         >
+          <Html position={[0.25, 4.5, 0]} center scale={0.05}>
+            <div className="relative select-none">
+              <div
+                className={`px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200 ${
+                  seenCharacters.includes(CHARACTER_NAME) ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
+                <div className="text-2xl font-black text-white">✔</div>
+              </div>
+            </div>
+          </Html>
           <Glow action={currentAction} />
         </Proximity>
       </group>
