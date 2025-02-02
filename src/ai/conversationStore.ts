@@ -15,7 +15,7 @@ export interface Message {
 
 
 export interface CoreInfo {
-  age: number; // e.g., 25
+  age: number; // e.g., 25 
   stageOfLife: string; // e.g., "Student" or "Professional"
   favoriteHobbyOrSubject: string; // Either a preset option or user-provided text
   preferredLearningStyle: string; // e.g., "Theory", "Hands-on", "Mixed"
