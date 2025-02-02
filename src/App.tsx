@@ -99,9 +99,9 @@ export default function App() {
 
 function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
   const [page, setPage] = useState(1);
-  const [age, setAge] = useState(18);
+  const [age, setAge] = useState("18");
   const [status, setStatus] = useState("Undergrad Student");
-  const [goal, setGoal] = useState("");
+  const [goal, setGoal] = useState("goal");
 
   const handleGameStart = () => {
     submitAnswers({ a1: age, a2: status, a3: goal });
