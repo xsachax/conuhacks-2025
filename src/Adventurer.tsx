@@ -68,19 +68,24 @@ export default function GameCharacter() {
   return (
     <KeyboardControls map={keyboardMap}>
       <Ecctrl
-        position={position}
-        mode="FixedCamera"
-        maxVelLimit={5}
-        sprintMult={3}
-        animated
-        camInitDir={{
-          x: Math.PI / 8,
-          y: Math.PI / 32,
-        }}
-        userData={{
-          name: "player",
-        }}
-      >
+  position={position}
+  mode="FixedCamera"
+  maxVelLimit={5}
+  sprintMult={1.8}
+  animated
+  camInitDir={{
+    x: Math.PI / 8, 
+    y: Math.PI / 32,
+  }}
+  camTargetPos={{
+    x: 0,
+    y: 0.2,
+    z: 1.5,
+  }}
+  userData={{
+    name: "player",
+  }}
+>
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>
           <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.015} rotation={[1.5,0,0]} />
         </EcctrlAnimation>
