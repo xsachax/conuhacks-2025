@@ -1,3 +1,4 @@
+// conversationStore.ts
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
 
@@ -5,14 +6,12 @@ import { sendChatMessage } from './sendChatMessage';
 // Interfaces & Types
 // --------------------
 
-
 export interface Message {
   role: 'user' | 'assistant';
   content: string;
   id?: string;
   timestamp?: number;
 }
-
 
 export interface CoreInfo {
   age: number; // e.g., 25 
@@ -24,16 +23,24 @@ export interface CoreInfo {
 }
 
 
-export interface PromptResponses {
-  [promptId: string]: string;
+export interface QARecord {
+  promptId: string;
+  question: string;
+  answer: string;
+  summary: string;
 }
 
+// --------------------
+// Zustand Store Interfaces
+// --------------------
 
 interface ConversationState {
   conversationHistory: Message[];
   addMessage: (msg: Message) => void;
   coreInfo: CoreInfo;
   setCoreInfo: (info: Partial<CoreInfo>) => void;
+  qaRecords: QARecord[];
+  addQARecord: (record: QARecord) => void;
 }
 
 // --------------------
@@ -50,7 +57,7 @@ const defaultCoreInfo: CoreInfo = {
 };
 
 // --------------------
-// Zustand Store
+// Create Zustand Store
 // --------------------
 
 const useConversationStore = create<ConversationState>((set) => ({
@@ -64,33 +71,15 @@ const useConversationStore = create<ConversationState>((set) => ({
     set((state) => ({
       coreInfo: { ...state.coreInfo, ...info },
     })),
+  qaRecords: [],
+  addQARecord: (record: QARecord) =>
+    set((state) => ({
+      qaRecords: [...state.qaRecords, record],
+    })),
 }));
 
 // --------------------
-// Local Storage Functions
-// --------------------
-
-const CORE_INFO_KEY = "coreInfo";
-const PROMPT_RESPONSES_KEY = "promptResponses";
-
-export function saveCoreInfo(coreInfo: CoreInfo): void {
-  localStorage.setItem(CORE_INFO_KEY, JSON.stringify(coreInfo));
-}
-
-export function loadCoreInfo(): CoreInfo | null {
-  const stored = localStorage.getItem(CORE_INFO_KEY);
-  return stored ? (JSON.parse(stored) as CoreInfo) : null;
-}
-
-export function savePromptResponse(promptId: string, summary: string): void {
-  const stored = localStorage.getItem(PROMPT_RESPONSES_KEY);
-  const responses: PromptResponses = stored ? JSON.parse(stored) : {};
-  responses[promptId] = summary;
-  localStorage.setItem(PROMPT_RESPONSES_KEY, JSON.stringify(responses));
-}
-
-// --------------------
-// Summarization Functions
+// Summarization Function
 // --------------------
 
 export async function summarizeResponse(response: string): Promise<string> {
@@ -101,13 +90,33 @@ export async function summarizeResponse(response: string): Promise<string> {
     return summary;
   } catch (error) {
     console.error("Error summarizing response:", error);
-    return response;
+    return response; 
   }
 }
 
-export async function processAndSavePromptResponse(promptId: string, response: string): Promise<void> {
-  const summary = await summarizeResponse(response);
-  savePromptResponse(promptId, summary);
+// --------------------
+// Process & Save a QA Record
+// --------------------
+
+/**
+ * Given a prompt (question) and the user's answer (from speech-to-text),
+ * this function will:
+ * 1. Summarize the answer behind the scenes.
+ * 2. Save a QA record (question, answer, summary) to our in‑memory store.
+ *
+ * @param promptId A unique ID for this question.
+ * @param question The question asked.
+ * @param answer The answer received (e.g. from speech-to-text).
+ */
+export async function processAndSaveQARecord(promptId: string, question: string, answer: string): Promise<void> {
+  const summary = await summarizeResponse(answer);
+  const record: QARecord = {
+    promptId,
+    question,
+    answer,
+    summary,
+  };
+  useConversationStore.getState().addQARecord(record);
 }
 
 // --------------------
