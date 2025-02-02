@@ -27,7 +27,7 @@ export default function App() {
           <Lights />
           <Sky distance={0} sunPosition={[-10, 1, 0]} inclination={0.5} azimuth={0.25} />
           <Suspense fallback={null}>
-            <Character />
+            <Adventurer />
             <World />
           </Suspense>
         </Physics>
