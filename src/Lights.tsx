@@ -7,29 +7,37 @@ export default function Lights() {
 
   return (
     <>
-      {/* Main directional light (sun-like) */}
       <directionalLight
         ref={lightRef}
         castShadow
-        position={[-10, 4, 1]}
-        intensity={1}
-        shadow-mapSize={[2048, 2048]}
-        shadow-camera-near={1}
-        shadow-camera-far={20}
-        shadow-camera-top={10}
-        shadow-camera-right={10}
-        shadow-camera-bottom={-10}
-        shadow-camera-left={-10}
+        position={[-10, 0, 5]} 
+        intensity={2.5}
+        color="#ffffff"
+        shadow-mapSize={[4096, 4096]} 
+        shadow-camera-near={0.5}
+        shadow-camera-far={50}
+        shadow-camera-top={20}
+        shadow-camera-right={20}
+        shadow-camera-bottom={-20}
+        shadow-camera-left={-20}
       />
 
-      {/* Ambient light for overall scene brightness */}
-      <ambientLight intensity={0.3} />
+      {/* Ambient light for indirect reflections */}
+      <ambientLight intensity={0.4} color="#cceeff" /> {/* Light blue tint for water glow */}
 
-      {/* Hemisphere light for better sky/ground contrast */}
-      <hemisphereLight color="#ffffff" groundColor="#8d7c7c" intensity={0.75} />
+      {/* Hemisphere light - Boost sky reflections */}
+      <hemisphereLight
+        color="#bfe4ff" 
+        groundColor="#a5d9ff" 
+        intensity={1.2} 
+      />
 
-      {/* Fill light from the opposite side */}
-      <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#b5d6ff" />
+      {/* Soft blue fill light for enhancing water reflections */}
+      <directionalLight
+        position={[5, 5, -5]}
+        intensity={0.8}
+        color="#99ccff"
+      />
     </>
   );
 }
