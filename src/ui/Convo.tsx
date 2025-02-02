@@ -5,7 +5,7 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { startSpeechToText } from "../speech_recognition/speechToText";
 import garfield from "../assets/garfield.jpg";
 import steve from "../assets/steve.jpg";
-import wario from "../assets/wario.png";
+import krabs from "../assets/krabs.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
 import finish from "../assets/sfx/finish.mp3";
@@ -22,7 +22,7 @@ export default function Convo() {
   const characterMap = {
     Garfield: garfield,
     Steve: steve,
-    Wario: wario,
+    Krabs: krabs,
     Yoda: yoda,
     Horse: horse,
   };
@@ -30,7 +30,7 @@ export default function Convo() {
   const initialCharacterMessages = {
     Garfield: "I hate Mondays. <br/><br/><strong>But I can show you how to enjoy them!</strong>",
     Steve: "Hello, my name is Steve. <br/><br/><strong>I'm still looking for my career treasure!</strong>",
-    Wario: "Wahhhhh. <br/><br/><strong>I'm Wario. I'm-a gonna help you win!</strong>",
+    Krabs: "Wahhhhh. <br/><br/><strong>Money money money money!</strong>",
     Yoda: "Do or do not, there is no try. <br/><br/><strong>I can help you find your path.</strong>",
     Horse: "Howdy. <br/><br/><strong>I'm a horse. I can help you find your inner strength.</strong>",
   };
