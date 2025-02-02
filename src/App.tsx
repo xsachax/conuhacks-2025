@@ -1,7 +1,7 @@
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Sky } from "@react-three/drei";
-import { Perf } from "r3f-perf";
+// import { Perf } from "r3f-perf";
 import { Suspense, useEffect, useState } from "react";
 import Lights from "./Lights";
 import World from "./World";

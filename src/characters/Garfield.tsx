@@ -44,7 +44,6 @@ export default function Character({ position, rotation, action }: { position: [n
   const { setConvoActive, seenCharacters, setCurrentCharacterName } = useConvoStore();
 
   return (
-    console.log("Garfield Rendered"),
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
     <group position={position} rotation={rotation} onClick={handleCharacterClicked}>
       <Html position={[0.25, 4.5, 0]} center scale={0.05}>
