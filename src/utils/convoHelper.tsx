@@ -18,7 +18,7 @@ export const useConvoStore = create<ConvoState>()((set) => ({
   convoActive: false,
   currentCharacterName: "",
   currentPart: 1,
-  currentQuestion: 1,
+  currentQuestion: 0,
   seenCharacters: [],
   answers: {
     part1: {
@@ -83,7 +83,7 @@ export const useConvoStore = create<ConvoState>()((set) => ({
     set((prevState) => ({
       convoActive: false,
       currentPart: properExit ? prevState.currentPart + 1 : prevState.currentPart,
-      currentQuestion: 1,
+      currentQuestion: 0,
       seenCharacters: properExit ? [...prevState.seenCharacters, prevState.currentCharacterName] : prevState.seenCharacters,
       currentCharacterName: "",
       answers: properExit

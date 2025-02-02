@@ -21,10 +21,20 @@ export default function Convo() {
     Horse: horse,
   };
 
+  const initialCharacterMessages = {
+    Garfield: "I hate Mondays. <br/><br/><strong>But I can show you how to enjoy them!</strong>",
+    Steve: "Hello, my name is Steve. <br/><br/><strong>I'm still looking for my career treasure!</strong>",
+    Wario: "Wahhhhh. <br/><br/><strong>I'm Wario. I'm-a gonna help you win!</strong>",
+    Yoda: "Do or do not, there is no try. <br/><br/><strong>I can help you find your path.</strong>",
+    Horse: "Neigh. <br/><br/><strong>I'm a horse. I can help you find your inner strength.</strong>",
+  };
+
   if (!convoActive) return null;
 
   const handleNext = () => {
-    answers[`part${currentPart}`][`a${currentQuestion}`] = inputFieldValue;
+    if (currentQuestion !== 0) {
+      answers[`part${currentPart}`][`a${currentQuestion}`] = inputFieldValue;
+    }
     if (currentQuestion < 3) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
@@ -61,37 +71,58 @@ export default function Convo() {
 
         {/* Convo text */}
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
-        <p
-          className="text-gray-700 whitespace-pre-line mt-24"
-          dangerouslySetInnerHTML={{
-            __html: questions[`part${currentPart}`][`q${currentQuestion}`],
-          }}
-        />
+        {currentQuestion === 0 ? (
+          <>
+            <p
+              className="text-gray-700 whitespace-pre-line mt-24"
+              dangerouslySetInnerHTML={{
+                __html: initialCharacterMessages[currentCharacterName],
+              }}
+            />
+            <div className="flex justify-end gap-3 pt-4">
+              <div className="flex flex-col w-full gap-2">
+                {currentQuestion <= 3 && (
+                  <button type="button" onClick={() => handleNext()} className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                    Start
+                  </button>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p
+              className="text-gray-700 whitespace-pre-line mt-24"
+              dangerouslySetInnerHTML={{
+                __html: questions[`part${currentPart}`][`q${currentQuestion}`],
+              }}
+            />
 
-        {/* Input field and microphone button */}
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            id="convo-input"
-            onChange={(e) => setInputFieldValue(e.target.value)}
-            value={inputFieldValue}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Type your response..."
-          />
-          <button type="button" onClick={handleSTT} className="p-2 px-3 h-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
-            <FontAwesomeIcon icon={faMicrophone} />
-          </button>
-        </div>
-
-        <div className="flex justify-end gap-3 pt-4">
-          <div className="flex flex-col w-full gap-2">
-            {currentQuestion <= 3 && (
-              <button type="button" onClick={() => handleNext()} className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
-                {currentQuestion < 3 ? "Next" : "Finish"}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                id="convo-input"
+                onChange={(e) => setInputFieldValue(e.target.value)}
+                value={inputFieldValue}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Type your response..."
+              />
+              <button type="button" onClick={handleSTT} className="p-2 px-3 h-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                <FontAwesomeIcon icon={faMicrophone} />
               </button>
-            )}
-          </div>
-        </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <div className="flex flex-col w-full gap-2">
+                {currentQuestion <= 3 && (
+                  <button type="button" onClick={() => handleNext()} className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                    {currentQuestion < 3 ? "Next" : "Finish"}
+                  </button>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
