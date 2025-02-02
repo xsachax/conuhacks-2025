@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <>
-      {currentConvo && <Convo />}
+      {convoActive && <Convo />}
       <Canvas shadows camera={{ position: [0, 5, 120], fov: 80}}>
 
         <Perf position="top-left" />
