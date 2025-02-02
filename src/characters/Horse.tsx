@@ -25,26 +25,35 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function RealEstate({
-  position,
-  rotation,
-  action,
-  convo,
-}: {
-  position: [number, number, number];
-  rotation: [number, number, number];
-  action?: Action;
-  convo: Convo;
-}) {
+export default function RealEstate({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
   const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
-  const { setConvo } = useConvoStore();
+  const CHARACTER_NAME = "Horse";
+
+  const handleCharacterClicked = () => {
+    console.log("Character clicked");
+    // dont allow convo to be opened if it has already been seen
+    if (seenCharacters.includes(CHARACTER_NAME)) return;
+    setConvoActive(true);
+    setCurrentCharacterName(CHARACTER_NAME);
+  };
+
+  const { setConvoActive, seenCharacters, setCurrentCharacterName } = useConvoStore();
+
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-    <group position={position} rotation={rotation} onClick={() => setConvo(convo)}>
+    <group position={position} rotation={rotation} onClick={handleCharacterClicked}>
       <Html position={[0, 3.5, 0]} center scale={0.05}>
         <div className="relative select-none">
           <div className="bg-white px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200">
-            <div className="text-2xl font-black text-red-500 animate-bounce">!</div>
+            <div
+              className={`px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200 ${seenCharacters.includes(CHARACTER_NAME) ? "bg-green-500" : "bg-red-500"}`}
+            >
+              {seenCharacters.includes(CHARACTER_NAME) ? (
+                <div className="text-2xl font-black text-white">✔</div>
+              ) : (
+                <div className="text-2xl font-black text-white animate-bounce">!</div>
+              )}
+            </div>
 
             <div
               className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 
