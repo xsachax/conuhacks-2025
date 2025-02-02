@@ -116,7 +116,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
         <div className="absolute inset-0 bg-black/30 z-10" />
         <Canvas>
           <Suspense fallback={null}>
-            <StartScreenBackground />
+            <NoneGameScreenBackground />
           </Suspense>
         </Canvas>
       </div>
@@ -186,7 +186,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
   );
 }
 
-function StartScreenBackground() {
+function NoneGameScreenBackground() {
   const { scene } = useThree();
 
   useFrame(() => {

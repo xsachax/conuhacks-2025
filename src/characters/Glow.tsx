@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Proximity from "../utils/Proximity";
-import Horse from "../models/Horse";
+import Glow from "../models/Glow";
 import { Html } from "@react-three/drei";
 import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
-import voiceline from "../assets/sfx/horse.mp3";
+import voiceline from "../assets/sfx/glow.mp3";
 
 const voicelineAudio = new Audio(voiceline);
 
@@ -30,7 +30,7 @@ type Action =
 
 export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
   const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
-  const CHARACTER_NAME = "Horse";
+  const CHARACTER_NAME = "Glow";
 
   const handleCharacterClicked = () => {
     voicelineAudio.volume = 1;
@@ -79,11 +79,11 @@ export default function Character({ position, rotation, action }: { position: [n
           setCurrentAction("CharacterArmature|Wave");
         }}
         onLeave={() => {
-          //console.log("Out");
+          console.log("Out");
           setCurrentAction("CharacterArmature|HitReact");
         }}
       >
-        <Horse action={currentAction} />
+        <Glow action={currentAction} />
       </Proximity>
     </group>
   );

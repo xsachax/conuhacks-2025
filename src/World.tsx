@@ -7,10 +7,10 @@ import Garfield from "./characters/Garfield";
 import Krabs from "./characters/Krabs";
 import Glow from "./models/Glow";
 import TranslationHelper from "./TranslationHelper";
-import type { Convo } from "./utils/store";
-import { useConvoStore } from "./utils/convoHelper";
+import { useGameStore } from "./utils/gameStore";
 
 export default function World() {
+  const { isGameReadyToEnd } = useGameStore();
   return (
     <>
       <group scale={4}>
@@ -25,8 +25,8 @@ export default function World() {
       <Garfield position={[1.5, -10.1, -20.89]} rotation={[0, 4.2, 0]} />
       {/* <Wario position={[-55, -13.2, -10]} rotation={[0, -4.3, 0]} /> */}
       <Krabs position={[-55, -11.9, -10]} rotation={[0, -4.3, 0]} />
-      <Yoda position={[-78.60, -11.87, 35.00]} rotation={[0, -4.3, 0]}  />
-      <Glow position={[0.09, 0.30, 0.71]} rotation={[0, 0, 0]} />
+      <Yoda position={[-78.6, -11.87, 35.0]} rotation={[0, -4.3, 0]} />
+      <Glow position={[-25, -5, 30.0]} rotation={[0, 0, 0]} />
     </>
   );
 }

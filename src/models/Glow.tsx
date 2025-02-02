@@ -8,36 +8,36 @@ Source: https://sketchfab.com/3d-models/star-effect-low-poly-137kb-503d059fbb444
 Title: Star effect low poly 137KB
 */
 
-import * as THREE from 'three'
-import React from 'react'
-import { useGraph } from '@react-three/fiber'
-import { useGLTF, useAnimations } from '@react-three/drei'
-import { GLTF, SkeletonUtils } from 'three-stdlib'
-import { RigidBody } from '@react-three/rapier'
+import * as THREE from "three";
+import React from "react";
+import { useGraph } from "@react-three/fiber";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { GLTF, SkeletonUtils } from "three-stdlib";
+import { RigidBody } from "@react-three/rapier";
 
-type ActionName = 'Scene'
+type ActionName = "Scene";
 
 interface GLTFAction extends THREE.AnimationClip {
-  name: ActionName
+  name: ActionName;
 }
 
 type GLTFResult = GLTF & {
   nodes: {
-    Object_9: THREE.SkinnedMesh
-    _rootJoint: THREE.Bone
-  }
+    Object_9: THREE.SkinnedMesh;
+    _rootJoint: THREE.Bone;
+  };
   materials: {
-    ['transparent.001']: THREE.MeshPhysicalMaterial
-  }
-  animations: GLTFAction[]
-}
+    ["transparent.001"]: THREE.MeshPhysicalMaterial;
+  };
+  animations: GLTFAction[];
+};
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
-  const group = React.useRef<THREE.Group>()
-  const { scene, animations } = useGLTF('/models/glow-transformed.glb')
-  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-  const { nodes, materials } = useGraph(clone) as GLTFResult
-  const { actions } = useAnimations(animations, group)
+export default function Model(props: JSX.IntrinsicElements["group"]) {
+  const group = React.useRef<THREE.Group>();
+  const { scene, animations } = useGLTF("/models/glow-transformed.glb");
+  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { nodes, materials } = useGraph(clone) as GLTFResult;
+  const { actions } = useAnimations(animations, group);
 
   // Object.values(materials).forEach((material) => {
   //   material.roughness = 0.7
@@ -45,21 +45,27 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   // })
 
   React.useEffect(() => {
-    if (actions['Scene']) {
-      actions['Scene'].play()
+    if (actions["Scene"]) {
+      actions["Scene"].play();
     }
-  }, [actions])
+  }, [actions]);
   return (
-    console.log(group),
-    <RigidBody scale={50} type="fixed">
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <primitive object={nodes._rootJoint} />
-        <skinnedMesh name="Object_9" geometry={nodes.Object_9.geometry} material={materials['transparent.001']} skeleton={nodes.Object_9.skeleton} rotation={[-Math.PI / 2, 0, 0]} scale={7.696} />
+    <RigidBody colliders="trimesh" lockRotations={true} scale={1.8} type="fixed">
+      <group ref={group} {...props} dispose={null}>
+        <group name="Sketchfab_Scene">
+          <primitive object={nodes._rootJoint} />
+          <skinnedMesh
+            name="Object_9"
+            geometry={nodes.Object_9.geometry}
+            material={materials["transparent.001"]}
+            skeleton={nodes.Object_9.skeleton}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={7.696}
+          />
+        </group>
       </group>
-    </group>
     </RigidBody>
-  )
+  );
 }
 
-useGLTF.preload('/glow-transformed.glb')
+useGLTF.preload("/glow-transformed.glb");
