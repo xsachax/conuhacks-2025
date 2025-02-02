@@ -9,9 +9,9 @@ import wario from "../assets/wario.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
 import finish from "../sfx/finish.mp3";
+import { Typewriter } from "react-simple-typewriter";
 
 const finishAudio = new Audio(finish);
-import { Typewriter } from "react-simple-typewriter";
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
