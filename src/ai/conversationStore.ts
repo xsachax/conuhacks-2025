@@ -1,27 +1,36 @@
-/*
-EXAMPLE USE CASE:
-The process is as follows:
- * 1. Call `startSpeechToText()` to capture the user's answer via speech recognition.
- * 2. Pass the prompt ID, question, and captured answer to `processAndSaveQARecord()`,
- *    which will summarize the answer and store the complete QA record in memory.
+/**
+ * EXAMPLE USE CASE:
+ *
+ * The process is as follows:
+ *
+ * 1. Request new career path questions:
+ *    - Call `requestNextCareerPathQuestions()` to generate three new, unique career-related questions.
+ *      These questions are stored in the in-memory store.
+ *
+ *
+ * 2. For each question the user answers:
+ *    - Capture the user's answer using speech-to-text (via `startSpeechToText()`).
+ *    - Call `submitAnswer(answer)` with the user's answer. This stores the complete record 
+ *      (question, answer, and summary) in the in-memory store.
  *
  * @example
- * async function askAndProcessQuestion(promptId, question) {
- *   const answer = await startSpeechToText();
- *   await processAndSaveQARecord(promptId, question, answer);
+ * const questions = await requestNextCareerPathQuestions();
+ * questions.forEach((q, index) => {
+ *   console.log(`Question ${index + 1}: ${q}`);
+ * });
+ *
+ * async function handleUserAnswer(spokenAnswer: string) {
+ *   await submitAnswer(spokenAnswer);
+ *   console.log("Answer submitted for the next pending question.");
  * }
- * 
- * 3. To request a new question based on the user's previous answers, call `requestNextCareerPathQuestion()`.
- *   This function will generate a new question based on the user's previous answers. No need to pass any arguments.
-*/
+ */
 
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
 
-// --------------------
-// Interfaces & Types
-// --------------------
-
+// =========================================
+// Message interface used for chat history.
+// =========================================
 export interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -38,25 +47,28 @@ export interface CoreInfo {
   problemSolvingMethod: string; // e.g., "I prefer to plan and strategize before acting"
 }
 
-
-export interface QARecord {
-  promptId?: string;
+// =========================================
+// Represents a stored career answer record.
+// ========================================= 
+export interface CareerAnswerRecord {
+  promptId: string;
   question: string;
   answer: string;
   summary: string;
 }
 
-// --------------------
-// Zustand Store Interfaces
-// --------------------
-
+// ==============================
+// Zustand store state interface.
+// ==============================
 interface ConversationState {
   conversationHistory: Message[];
   addMessage: (msg: Message) => void;
   coreInfo: CoreInfo;
   setCoreInfo: (info: Partial<CoreInfo>) => void;
-  qaRecords: QARecord[];
-  addQARecord: (record: QARecord) => void;
+  careerQuestions: string[];
+  addCareerQuestions: (questions: string[]) => void;
+  careerAnswers: CareerAnswerRecord[];
+  addCareerAnswer: (record: CareerAnswerRecord) => void;
 }
 
 // --------------------
@@ -87,10 +99,15 @@ const useConversationStore = create<ConversationState>((set) => ({
     set((state) => ({
       coreInfo: { ...state.coreInfo, ...info },
     })),
-  qaRecords: [],
-  addQARecord: (record: QARecord) =>
+  careerQuestions: [],
+  addCareerQuestions: (questions: string[]) =>
     set((state) => ({
-      qaRecords: [...state.qaRecords, record],
+      careerQuestions: [...state.careerQuestions, ...questions],
+    })),
+  careerAnswers: [],
+  addCareerAnswer: (record: CareerAnswerRecord) =>
+    set((state) => ({
+      careerAnswers: [...state.careerAnswers, record],
     })),
 }));
 
@@ -98,6 +115,10 @@ const useConversationStore = create<ConversationState>((set) => ({
 // Summarization Function
 // --------------------
 
+/**
+ * Uses sendChatMessage to summarize a user's answer.
+ * The summarization prompt is created here; sendChatMessage is expected to return the assistant's reply as a string.
+ */
 export async function summarizeResponse(response: string): Promise<string> {
   const prompt = `Summarize the following user response in one sentence: "${response}"`;
   try {
@@ -111,53 +132,73 @@ export async function summarizeResponse(response: string): Promise<string> {
 }
 
 // --------------------
-// Process & Save a QA Record
+// Request Next Career Path Questions
 // --------------------
 
-/**
- * Given a prompt (question) and the user's answer (from speech-to-text),
- * this function will:
- * 1. Summarize the answer behind the scenes.
- * 2. Save a QA record (question, answer, summary) to our in‑memory store.
- *
- * @param promptId A unique ID for this question.
- * @param question The question asked.
- * @param answer The answer received (e.g. from speech-to-text).
- */
-export async function processAndSaveQARecord(promptId: string, question: string, answer: string): Promise<void> {
+export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2: string; q3: string }> {
+  const store = useConversationStore.getState();
+
+  const previousQuestions = store.careerQuestions.join("\n");
+  const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
+
+  const prompt = `
+    Based on the user's previous interactions, please generate three new, unique questions about their career path.
+    Do not repeat any questions that have already been asked.
+
+    Previously asked questions:
+    ${previousQuestions}
+
+    User responses:
+    ${previousAnswers}
+
+    Next career-related questions (each on a new line):
+  `;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const response: any = await sendChatMessage(prompt);
+  console.log("Generated next career path questions:", response);
+
+  const questions = response
+    .split('\n')
+    .map((q: string) => q.trim())
+    .filter((q: string) => q.length > 0);
+
+  store.addCareerQuestions(questions);
+
+  return {
+    q1: questions[0] || "",
+    q2: questions[1] || "",
+    q3: questions[2] || ""
+  };
+}
+
+
+// --------------------
+// Submit an Answer for the Next Question
+// --------------------
+
+export async function submitAnswer(answer: string): Promise<void> {
+  const store = useConversationStore.getState();
+
+  if (store.careerQuestions.length === 0) {
+    console.error("No pending question available to answer.");
+    return;
+  }
+
+  const question = store.careerQuestions.shift() as string;
+
+  const promptId = Date.now().toString();
+
   const summary = await summarizeResponse(answer);
-  const record: QARecord = {
+
+  const record = {
     promptId,
     question,
     answer,
     summary,
   };
-  useConversationStore.getState().addQARecord(record);
-}
 
-export async function requestNextCareerPathQuestion(): Promise<string> {
-  const store = useConversationStore.getState();
-
-  const previousQuestions = store.qaRecords.map(record => record.question).join("\n");
-  const previousAnswers = store.qaRecords.map(record => record.answer).join("\n");
-
-  const prompt = `
-Based on the user's previous responses and questions, please generate a new, unique question about their career path.
-Do not repeat any questions that have already been asked.
-
-Previously asked questions:
-${previousQuestions}
-
-User responses:
-${previousAnswers}
-
-Next career-related question:
-  `;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const nextQuestion: any = await sendChatMessage(prompt);
-  console.log("Generated next career path question:", nextQuestion);
-  return nextQuestion;
+  store.addCareerAnswer(record);
 }
 
 // --------------------

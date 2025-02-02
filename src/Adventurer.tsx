@@ -6,24 +6,30 @@ import Adventurer from "./models/Adventurer";
 import { Vector3, type Group } from "three";
 
 type ActionName =
-  | "CharacterArmature|Death"
-  | "CharacterArmature|Duck"
-  | "CharacterArmature|HitReact"
-  | "CharacterArmature|Idle"
-  | "CharacterArmature|Idle_Gun"
-  | "CharacterArmature|Jump"
-  | "CharacterArmature|Jump_Idle"
-  | "CharacterArmature|Jump_Land"
-  | "CharacterArmature|No"
-  | "CharacterArmature|Punch"
-  | "CharacterArmature|Run"
-  | "CharacterArmature|Run_Gun"
-  | "CharacterArmature|Run_Gun_Shoot"
-  | "CharacterArmature|Walk"
-  | "CharacterArmature|Walk_Gun"
-  | "CharacterArmature|Wave"
-  | "CharacterArmature|Weapon"
-  | "CharacterArmature|Yes";
+| "CharacterArmature|Death"
+| "CharacterArmature|Gun_Shoot"
+| "CharacterArmature|HitRecieve"
+| "CharacterArmature|HitRecieve_2"
+| "CharacterArmature|Idle"
+| "CharacterArmature|Idle_Gun"
+| "CharacterArmature|Idle_Gun_Pointing"
+| "CharacterArmature|Idle_Gun_Shoot"
+| "CharacterArmature|Idle_Neutral"
+| "CharacterArmature|Idle_Sword"
+| "CharacterArmature|Interact"
+| "CharacterArmature|Kick_Left"
+| "CharacterArmature|Kick_Right"
+| "CharacterArmature|Punch_Left"
+| "CharacterArmature|Punch_Right"
+| "CharacterArmature|Roll"
+| "CharacterArmature|Run"
+| "CharacterArmature|Run_Back"
+| "CharacterArmature|Run_Left"
+| "CharacterArmature|Run_Right"
+| "CharacterArmature|Run_Shoot"
+| "CharacterArmature|Sword_Slash"
+| "CharacterArmature|Walk"
+| "CharacterArmature|Wave";
 
 export default function GameCharacter() {
   const characterRef = useRef<Group>(null);
@@ -39,13 +45,13 @@ export default function GameCharacter() {
   ];
 
   const animationSet: Record<string, ActionName> = {
-    idle: "CharacterArmature|HitReact",
+    idle: "CharacterArmature|Idle",
     walk: "CharacterArmature|Walk",
     run: "CharacterArmature|Run",
-    jump: "CharacterArmature|Jump",
-    jumpIdle: "CharacterArmature|Jump_Idle",
-    jumpLand: "CharacterArmature|Jump_Land",
-    fall: "CharacterArmature|Jump_Land",
+    jump: "CharacterArmature|Run",
+    jumpIdle: "CharacterArmature|Run",
+    jumpLand: "CharacterArmature|Run",
+    fall: "CharacterArmature|Run",
   };
 
   useFrame(() => {
@@ -76,7 +82,7 @@ export default function GameCharacter() {
         }}
       >
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>
-          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.5} />
+          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.01} rotation={[1.5,0,0]} />
         </EcctrlAnimation>
       </Ecctrl>
     </KeyboardControls>
