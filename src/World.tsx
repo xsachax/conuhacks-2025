@@ -1,9 +1,7 @@
-// The world... import ./models/[model].tsx to construct the world
-
 import { RigidBody } from "@react-three/rapier";
-import Map from "./models/Map";
-
-// type Action = 'CharacterArmature|Death' | 'CharacterArmature|Duck' | 'CharacterArmature|HitReact' | 'CharacterArmature|Idle' | 'CharacterArmature|Idle_Gun' | 'CharacterArmature|Jump' | 'CharacterArmature|Jump_Idle' | 'CharacterArmature|Jump_Land' | 'CharacterArmature|No' | 'CharacterArmature|Punch' | 'CharacterArmature|Run' | 'CharacterArmature|Run_Gun' | 'CharacterArmature|Run_Gun_Shoot' | 'CharacterArmature|Walk' | 'CharacterArmature|Walk_Gun' | 'CharacterArmature|Wave' | 'CharacterArmature|Weapon' | 'CharacterArmature|Yes'
+import Horse from "./models/Horse";
+import Island from "./models/Island";
+import TranslationHelper from "./TranslationHelper";
 
 export default function World() {
   return (
@@ -11,9 +9,11 @@ export default function World() {
       <group scale={4}>
         {/* Ground and static elements */}
         <RigidBody type="fixed" colliders="trimesh">
-          <Map />
+          <Island />
         </RigidBody>
       </group>
+      <TranslationHelper position={[0, 0, 0]} />
+      <Horse position={[-22, -12.7, 10]} rotation={[0, 4, 0]} scale={2.5} dialog={{}} />
     </>
   );
 }
