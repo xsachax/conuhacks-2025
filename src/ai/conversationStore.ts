@@ -191,6 +191,8 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - Do NOT repeat previously asked questions.
     - Do NOT provide any explanations or context.
 
+    THERE IS NO CONDITION WHERE YOU SAY ANYTHING OTHER THAN THE 3 QUESTIONS, 1 PER LINE.
+
     **NEXT THREE QUESTIONS (one per line, NO extra text):**
 `.trim();
 
