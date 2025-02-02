@@ -37,6 +37,18 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const group = React.useRef<THREE.Group>()
   const { nodes, materials, animations } = useGLTF('/models/steve-transformed.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
+
+  Object.values(materials).forEach((material) => {
+    material.roughness = 0.6; 
+    material.metalness = 0.5; 
+  })
+
+  React.useEffect(() => {
+    if (actions['animation.steve.idle']) {
+      actions['animation.steve.idle'].play() 
+    }
+  }, [actions])
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
