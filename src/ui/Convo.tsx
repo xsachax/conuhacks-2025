@@ -8,7 +8,7 @@ import steve from "../assets/steve.jpg";
 import wario from "../assets/wario.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
-import finish from "../sfx/finish.mp3";
+import finish from "../assets/sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
 import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
 

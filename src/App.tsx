@@ -9,11 +9,24 @@ import Character from "./Character";
 import Adventurer from "./Adventurer";
 import { useConvoStore } from "./utils/convoHelper";
 import Convo from "./ui/Convo";
+import global from "./assets/sfx/global.mp3"
 
 export default function App() {
   //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const { convoActive } = useConvoStore();
+
+  useEffect(() => {
+    const audio = new Audio(global);
+    audio.volume = 0.5;
+    audio.loop = true;
+    audio.play();
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   return (
     <>

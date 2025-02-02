@@ -4,6 +4,9 @@ import Yoda from "../models/Yoda";
 import { Html } from "@react-three/drei";
 import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
+import voiceline from "../assets/sfx/yoda.mp3"
+
+const voicelineAudio = new Audio(voiceline);
 
 type Action =
   | "CharacterArmature|Death"
@@ -30,6 +33,7 @@ export default function RealEstate({ position, rotation, action }: { position: [
   const CHARACTER_NAME = "Yoda";
 
   const handleCharacterClicked = () => {
+    voicelineAudio.play();
     console.log("Character clicked");
     // dont allow convo to be opened if it has already been seen
     if (seenCharacters.includes(CHARACTER_NAME)) return;
