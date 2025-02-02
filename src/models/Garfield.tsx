@@ -56,7 +56,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   }, [actions])
 
   return (
-    <RigidBody colliders="trimesh" lockRotations={true}>
+    <RigidBody colliders="trimesh" lockRotations={true} scale={2.5}>
       <group ref={group} {...props} dispose={null}>
         <group name="Sketchfab_Scene">
           <primitive object={nodes._rootJoint} />
