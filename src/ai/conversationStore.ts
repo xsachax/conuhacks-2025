@@ -203,6 +203,7 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 
     const questions = response
       .split("\n")
+      .slice(1)
       .map((q: string) => q.trim())
       .filter((q: string) => q.length > 0);
 
