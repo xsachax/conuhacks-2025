@@ -74,15 +74,15 @@ export default function GameCharacter() {
         sprintMult={3}
         animated
         camInitDir={{
-          x: Math.PI / 12,
-          y: Math.PI / 2,
+          x: Math.PI / 8,
+          y: Math.PI / 32,
         }}
         userData={{
           name: "player",
         }}
       >
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>
-          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.01} rotation={[1.5,0,0]} />
+          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.015} rotation={[1.5,0,0]} />
         </EcctrlAnimation>
       </Ecctrl>
     </KeyboardControls>

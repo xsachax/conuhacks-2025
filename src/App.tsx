@@ -18,7 +18,7 @@ export default function App() {
   return (
     <>
       {currentConvo && <Convo />}
-      <Canvas shadows camera={{ position: [0, 5, 12], fov: 80 }}>
+      <Canvas shadows camera={{ position: [0, 5, 120], fov: 80}}>
         <Perf position="top-left" />
         <Physics
           timeStep="vary"
