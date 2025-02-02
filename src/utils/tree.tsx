@@ -5,23 +5,21 @@ import { getRelatedPositions } from "../ai/careerMatch";
 const TreeComponent: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [selectedNodeData, setSelectedNodeData] = useState<any>(null); 
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch career match results
       const results = await getRelatedPositions();
 
-      // Ensure the related jobs are available, fallback to a default if not
       const relatedJobs = [
-        { id: "4", label: results.relatedJob1a || "Related Job 1a" },
-        { id: "5", label: results.relatedJob1b || "Related Job 1b" },
-        { id: "6", label: results.relatedJob2a || "Related Job 2a" },
-        { id: "7", label: results.relatedJob2b || "Related Job 2b" },
-        { id: "8", label: results.relatedJob3a || "Related Job 3a" },
-        { id: "9", label: results.relatedJob3b || "Related Job 3b" },
+        { id: "4", label: results.relatedJob1a || "Related Job 1a", posting: results.relatedJob1aPosting || "https://ca.indeed.com" },
+        { id: "5", label: results.relatedJob1b || "Related Job 1b", posting: results.relatedJob1bPosting || "https://ca.indeed.com" },
+        { id: "6", label: results.relatedJob2a || "Related Job 2a", posting: results.relatedJob2aPosting || "https://ca.indeed.com" },
+        { id: "7", label: results.relatedJob2b || "Related Job 2b", posting: results.relatedJob2bPosting || "https://ca.indeed.com" },
+        { id: "8", label: results.relatedJob3a || "Related Job 3a", posting: results.relatedJob3aPosting || "https://ca.indeed.com" },
+        { id: "9", label: results.relatedJob3b || "Related Job 3b", posting: results.relatedJob3bPosting || "https://ca.indeed.com" },
       ];
 
-      // Create the root job nodes
       const newNodes: Node[] = [
         {
           id: "1",
@@ -43,15 +41,16 @@ const TreeComponent: React.FC = () => {
         },
       ];
 
-      // Create the related job nodes
       const relatedNodes: Node[] = relatedJobs.map((job, index) => ({
         id: job.id,
-        data: { label: job.label },
+        data: {
+          label: job.label,
+          url: job.posting,  
+        },
         position: { x: 150 + index * 200, y: 200 }, // Adjust positions with spacing
         style: { backgroundColor: "#ffffff", color: "#000", borderRadius: "15px", padding: "20px", border: "1px solid #ccc" },
       }));
 
-      // Create the edges connecting original jobs to related jobs
       const newEdges: Edge[] = [
         { id: "e1-4", source: "1", target: "4", animated: true, style: { stroke: "#000" } },
         { id: "e1-5", source: "1", target: "5", animated: true, style: { stroke: "#000" } },
@@ -61,7 +60,6 @@ const TreeComponent: React.FC = () => {
         { id: "e3-9", source: "3", target: "9", animated: true, style: { stroke: "#000" } },
       ];
 
-      // Combine the root and related nodes
       setNodes([...newNodes, ...relatedNodes]);
       setEdges(newEdges);
     };
@@ -69,13 +67,28 @@ const TreeComponent: React.FC = () => {
     fetchData();
   }, []);
 
+  const onNodeClick = (event: React.MouseEvent, node: Node) => {
+    setSelectedNodeData(node.data); 
+  };
+
   return (
     <div style={{ width: "90vw", height: "60vh", backgroundColor: "#f0f0f0", padding: "20px", borderRadius: "10px" }}>
-      <ReactFlow nodes={nodes} edges={edges} fitView>
+      <ReactFlow nodes={nodes} edges={edges} fitView onNodeClick={onNodeClick}>
         <MiniMap />
         <Controls />
         <Background color="#aaa" gap={16} />
       </ReactFlow>
+      
+      {/* Display the selected node's data */}
+      {selectedNodeData && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Selected Node Data:</h3>
+          <p><strong>Label:</strong> {selectedNodeData.label}</p>
+          {selectedNodeData.url && (
+            <p><strong>Job Posting:</strong> <a href={selectedNodeData.url} target="_blank" rel="noopener noreferrer">{selectedNodeData.url}</a></p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
