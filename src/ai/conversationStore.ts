@@ -27,6 +27,7 @@
 
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
+import { useConvoStore } from '../utils/convoHelper'
 
 // =========================================
 // Message interface used for chat history.
@@ -144,18 +145,26 @@ export async function summarizeResponse(response: string): Promise<string> {
 
 export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2: string; q3: string }> {
   const store = useConversationStore.getState();
+  const convoStore = useConvoStore.getState(); 
 
   const previousQuestions = store.careerQuestions.join("\n");
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    You are a career advisor AI. Your task is to generate exactly three (3) new, unique, career-related questions for the user.
+    You are an expert career advisor AI. Your task is to help the user discover different career paths based on their interests, skills, and preferences.
 
     Follow these strict rules:
-    - Output only the three questions.
-    - Each question must be on its own line.
+    - Output exactly three (3) career-related questions.
+    - Each question must be on a separate line.
     - Do NOT include any extra text, explanations, or formatting.
+    - Tailor the questions to guide the user toward identifying specific career fields.
     - Ensure the questions are different from previously asked ones.
+
+    Consider these aspects when generating questions:
+    - The user's background, interests, and previous answers.
+    - Their preferred learning style and work environment (teamwork vs solo).
+    - Their problem-solving approach.
+    - Careers they may not have considered but would be a good fit for their skills.
 
     Previous questions:
     ${previousQuestions}
@@ -163,7 +172,7 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     User responses:
     ${previousAnswers}
 
-    Provide exactly three career-related questions (one per line) below:
+    Generate exactly three career-related questions that will help them explore different career options (one per line) below:
   `.trim();
 
   try {
@@ -188,6 +197,12 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 
     store.addCareerQuestions(questions);
 
+    convoStore.updateQuestions(`part${store.part}`, {
+      q1: questions[0],
+      q2: questions[1],
+      q3: questions[2],
+    });
+    
     return {
       q1: questions[0] || "",
       q2: questions[1] || "",

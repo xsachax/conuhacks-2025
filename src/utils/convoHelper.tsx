@@ -9,7 +9,8 @@ interface ConvoState {
   seenCharacters: string[];
   setConvoActive: (convo: boolean) => void;
   clearConvo: () => void;
-  updateQuestion: (part: string, qNumber: string, question: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateQuestions: (part: string, question: any) => void;
   setCurrentQuestion: (question: number) => void;
   setCurrentPart: (part: number) => void;
 }
