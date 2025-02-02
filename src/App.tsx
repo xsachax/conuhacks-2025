@@ -10,12 +10,14 @@ import Adventurer from "./Adventurer";
 import { useConvoStore } from "./utils/convoHelper";
 import Convo from "./ui/Convo";
 import global from "./assets/sfx/global.mp3";
+import { useGameStore } from "./utils/gameStore";
 
 export default function App() {
   //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const { convoActive } = useConvoStore();
   const [audioPlayed, setAudioPlayed] = useState(false);
+  const { isGameStarted, setGameStarted, isGameEnded, setGameEnded } = useGameStore();
 
   const handleUserInteraction = () => {
     if (!audioPlayed) {
@@ -23,7 +25,7 @@ export default function App() {
       audio.volume = 0.5;
       audio.loop = true;
       audio.play().catch((error) => {
-        console.error('Audio play error:', error);
+        console.error("Audio play error:", error);
       });
       setAudioPlayed(true);
     }
@@ -36,6 +38,10 @@ export default function App() {
       window.removeEventListener("click", handleUserInteraction);
     };
   }, [audioPlayed]);
+
+  if (!isGameStarted) {
+    return <StartScreen setGameStarted={setGameStarted} />;
+  }
 
   return (
     <>
@@ -52,5 +58,19 @@ export default function App() {
         </Physics>
       </Canvas>
     </>
+  );
+}
+
+function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900">
+      <div className="bg-white p-8 rounded-lg">
+        <h1 className="text-4xl font-bold text-center">Welcome to the Adventure</h1>
+        <p className="text-center">Click anywhere to start the game</p>
+        <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setGameStarted(true)}>
+          Start
+        </button>
+      </div>
+    </div>
   );
 }
