@@ -97,18 +97,17 @@ export async function getRelatedPositions(): Promise<{
   relatedJob3a: string;
   relatedJob3b: string;
 }> {
-  const gameStore = useGameStore.getState();
-  const { job1 = "Software Engineer", job2 = "Data Scientist", job3 = "Product Manager", criteria1 = "Leadership", criteria2 = "Technical Skills", criteria3 = "Communication" } = gameStore;
+  const { gameResults } = useGameStore.getState();
 
   const prompt = `
     Based on the following top 3 career matches and their decision-making criteria, suggest 2 other related positions (potentially promotion, related, etc.) for each:
 
-    job1: ${job1}
-    job2: ${job2}
-    job3: ${job3}
-    criteria1: ${criteria1}
-    criteria2: ${criteria2}
-    criteria3: ${criteria3}
+    job1: ${gameResults.job1}
+    job2: ${gameResults.job2}
+    job3: ${gameResults.job3}
+    criteria1: ${gameResults.criteria1}
+    criteria2: ${gameResults.criteria2}
+    criteria3: ${gameResults.criteria3}
 
     Return ONLY the following format with NO extra text, explanations, or formatting:
 
@@ -132,8 +131,8 @@ export async function getRelatedPositions(): Promise<{
       throw new Error("sendChatMessage did not return a string");
     }
 
-    const relatedPositions = response.split('\n').reduce((acc: Record<string, string>, line: string) => {
-      const [key, value] = line.split(': ');
+    const relatedPositions = response.split("\n").reduce((acc: Record<string, string>, line: string) => {
+      const [key, value] = line.split(": ");
       if (key && value) {
         acc[key.trim()] = value.trim();
       }
@@ -144,26 +143,26 @@ export async function getRelatedPositions(): Promise<{
 
     // Ensure that default values are used if any field is missing or undefined
     return {
-      originalJob1: job1,
+      originalJob1: gameResults.job1,
       relatedJob1a: relatedPositions.relatedJob1a || "Senior Software Engineer",
       relatedJob1b: relatedPositions.relatedJob1b || "Software Engineering Manager",
-      originalJob2: job2,
+      originalJob2: gameResults.job2,
       relatedJob2a: relatedPositions.relatedJob2 || "Technical Lead",
       relatedJob2b: relatedPositions.relatedJob2 || "Data Science Manager",
-      originalJob3: job3,
+      originalJob3: gameResults.job3,
       relatedJob3a: relatedPositions.relatedJob3 || "Engineering Manager",
       relatedJob3b: relatedPositions.relatedJob3 || "Product Director",
     };
   } catch (error) {
     console.error("Error fetching related positions:", error);
     return {
-      originalJob1: job1,
+      originalJob1: gameResults.job1,
       relatedJob1a: "Senior Software Engineer",
       relatedJob1b: "Software Engineering Manager",
-      originalJob2: job2,
+      originalJob2: gameResults.job2,
       relatedJob2a: "Technical Lead",
       relatedJob2b: "Data Science Manager",
-      originalJob3: job3,
+      originalJob3: gameResults.job3,
       relatedJob3a: "Engineering Manager",
       relatedJob3b: "Product Director",
     };

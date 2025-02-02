@@ -14,6 +14,7 @@ import Island from "./models/Island";
 import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversationStore";
 import HashLoader from "react-spinners/HashLoader";
 import { getCareerMatchResults } from "./ai/careerMatch";
+import TreeComponent from "./utils/tree";
 
 export default function App() {
   const { convoActive } = useConvoStore();
@@ -242,43 +243,80 @@ function ResultsScreen() {
 
           <HashLoader color="#ffffff" loading={true} size={50} />
         </div>
-      ) : (
-        page === 3 && (
-          <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
-            <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
-              <div className="w-1/3">
-                <CircularProgressBar percentage={gameResults.accuracy1} />
-              </div>
-              <div className="w-2/3 text-center">
-                <h2 className="text-2xl font-bold mb-2">You're an aspiring</h2>
-                <h1 className="text-5xl font-bold text-blue-600">{gameResults.job1}!</h1>
-              </div>
+      ) : page === 3 ? (
+        <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
+          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
+            <div className="w-1/3">
+              <CircularProgressBar percentage={gameResults.accuracy1} />
             </div>
-
-            <div className="flex justify-around mb-12 pb-8 border-b-2 border-gray-200">
-              <div className="text-center flex flex-col items-center">
-                <h2 className="text-xl font-semibold mb-4">{gameResults.job2}</h2>
-                <CircularProgressBar percentage={gameResults.accuracy2} size="small" />
-              </div>
-              <div className="text-center flex flex-col items-center">
-                <h2 className="text-xl font-semibold mb-4">{gameResults.job3}</h2>
-                <CircularProgressBar percentage={gameResults.accuracy3} size="small" />
-              </div>
-            </div>
-            <h2 className="text-2xl font-bold text-center mb-4">Based on your responses, you value:</h2>
-            <div className="grid grid-cols-3 gap-6">
-              <div className="p-4 border-2 border-green-500 rounded-lg bg-green-50 flex items-center justify-center">
-                <h3 className="text-lg font-semibold text-green-700 text-center">{gameResults.criteria1}</h3>
-              </div>
-              <div className="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 flex items-center justify-center">
-                <h3 className="text-lg font-semibold text-blue-700 text-center">{gameResults.criteria2}</h3>
-              </div>
-              <div className="p-4 border-2 border-purple-500 rounded-lg bg-purple-50 flex items-center justify-center">
-                <h3 className="text-lg font-semibold text-purple-700 text-center">{gameResults.criteria3}</h3>
-              </div>
+            <div className="w-2/3 text-center">
+              <h2 className="text-2xl font-bold mb-2">You're an aspiring</h2>
+              <h1 className="text-5xl font-bold text-blue-600">{gameResults.job1}!</h1>
             </div>
           </div>
-        )
+
+          <div className="flex justify-around mb-12 pb-8 border-b-2 border-gray-200">
+            <div className="text-center flex flex-col items-center">
+              <h2 className="text-xl font-semibold mb-4">{gameResults.job2}</h2>
+              <CircularProgressBar percentage={gameResults.accuracy2} size="small" />
+            </div>
+            <div className="text-center flex flex-col items-center">
+              <h2 className="text-xl font-semibold mb-4">{gameResults.job3}</h2>
+              <CircularProgressBar percentage={gameResults.accuracy3} size="small" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-center mb-4">Based on your responses, you value:</h2>
+          <div className="grid grid-cols-3 gap-6">
+            <div className="p-4 border-2 border-green-500 rounded-lg bg-green-50 flex items-center justify-center">
+              <h3 className="text-lg font-semibold text-green-700 text-center">{gameResults.criteria1}</h3>
+            </div>
+            <div className="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 flex items-center justify-center">
+              <h3 className="text-lg font-semibold text-blue-700 text-center">{gameResults.criteria2}</h3>
+            </div>
+            <div className="p-4 border-2 border-purple-500 rounded-lg bg-purple-50 flex items-center justify-center">
+              <h3 className="text-lg font-semibold text-purple-700 text-center">{gameResults.criteria3}</h3>
+            </div>
+          </div>
+          <div className="flex justify-end mt-8">
+            <button className="mt-4 w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(4)}>
+              Next Steps &#8250;
+            </button>
+          </div>
+        </div>
+      ) : page === 4 ? (
+        <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
+          <h2 className="text-2xl font-bold text-center mb-4">Here is a generated tree of possible career paths:</h2>
+          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
+            <TreeComponent />
+          </div>
+          <div className="flex justify-between mt-8">
+            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer mr-2" onClick={() => setPage(3)}>
+              &#8249; Back
+            </button>
+            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(5)}>
+              Jobs &#8250;
+            </button>
+          </div>
+        </div>
+      ) : page === 5 ? (
+        <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
+          <h2 className="text-2xl font-bold text-center mb-4">Here are active jobs postings for your personalized career path:</h2>
+          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200"></div>
+          <div className="flex justify-between mt-8">
+            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer mr-2" onClick={() => setPage(4)}>
+              &#8249; Back
+            </button>
+            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(6)}>
+              Finish &#8250;
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => window.location.reload()}>
+            Start over
+          </button>
+        </>
       )}
     </div>
   );
