@@ -61,6 +61,8 @@ export interface CareerAnswerRecord {
 // Zustand store state interface.
 // ==============================
 interface ConversationState {
+  part: number; 
+  incrementPart: () => void;
   conversationHistory: Message[];
   addMessage: (msg: Message) => void;
   coreInfo: CoreInfo;
@@ -68,7 +70,7 @@ interface ConversationState {
   careerQuestions: string[];
   addCareerQuestions: (questions: string[]) => void;
   careerAnswers: CareerAnswerRecord[];
-  addCareerAnswer: (record: CareerAnswerRecord) => void;
+  addCareerAnswer: (records: CareerAnswerRecord[]) => void; 
 }
 
 // --------------------
@@ -105,9 +107,14 @@ const useConversationStore = create<ConversationState>((set) => ({
       careerQuestions: [...state.careerQuestions, ...questions],
     })),
   careerAnswers: [],
-  addCareerAnswer: (record: CareerAnswerRecord) =>
+  addCareerAnswer: (records: CareerAnswerRecord[]) =>
     set((state) => ({
-      careerAnswers: [...state.careerAnswers, record],
+      careerAnswers: [...state.careerAnswers, ...records],
+    })),
+  part: 1,
+  incrementPart: () =>
+    set((state) => ({
+      part: state.part + 1,
     })),
 }));
 
@@ -177,30 +184,35 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 // Submit an Answer for the Next Question
 // --------------------
 
-export async function submitAnswer(answer: string): Promise<void> {
+export async function submitAnswers({ a1, a2, a3 }: { a1: string; a2: string; a3: string }): Promise<void> {
   const store = useConversationStore.getState();
 
-  if (store.careerQuestions.length === 0) {
-    console.error("No pending question available to answer.");
+  const answers = [a1, a2, a3].filter(answer => answer.trim() !== "");
+
+  if (store.careerQuestions.length < answers.length) {
     return;
   }
 
-  const question = store.careerQuestions.shift() as string;
+  const records: CareerAnswerRecord[] = [];
+  const currentPart = store.part;
 
-  const promptId = Date.now().toString();
+  for (let i = 0; i < answers.length; i++) {
+    const question = store.careerQuestions.shift() as string;
+    const promptId = `${Date.now()}-part${currentPart}`;
 
-  const summary = await summarizeResponse(answer);
+    const summary = await summarizeResponse(answers[i]);
 
-  const record = {
-    promptId,
-    question,
-    answer,
-    summary,
-  };
+    records.push({
+      promptId,
+      question,
+      answer: answers[i],
+      summary,
+    });
+  }
 
-  store.addCareerAnswer(record);
+  store.addCareerAnswer(records);
+  store.incrementPart();
 }
-
 // --------------------
 // Default Export
 // --------------------

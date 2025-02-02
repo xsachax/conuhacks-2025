@@ -10,6 +10,7 @@ import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
 import finish from "../assets/sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
+import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
 
 const finishAudio = new Audio(finish);
 
@@ -42,8 +43,11 @@ export default function Convo() {
     if (currentQuestion < 3) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
+      // Part successfully completed
       clearConvo(true);
       finishAudio.play();
+      submitAnswers(answers[`part${currentPart}`]);
+      requestNextCareerPathQuestions();
     }
     setInputFieldValue("");
     //log all the convo store values
