@@ -12,7 +12,7 @@ export default function App() {
   //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   return (
-    <Canvas shadows camera={{ position: [0, 5, 12], fov: 55 }}>
+    <Canvas shadows camera={{ position: [0, 5, 12], fov: 80 }}>
       <Perf position="top-left" />
       <Physics
         timeStep="vary"
