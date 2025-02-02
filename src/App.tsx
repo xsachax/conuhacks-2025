@@ -294,29 +294,18 @@ function ResultsScreen() {
               &#8249; Back
             </button>
             <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(5)}>
-              Jobs &#8250;
-            </button>
-          </div>
-        </div>
-      ) : page === 5 ? (
-        <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
-          <h2 className="text-2xl font-bold text-center mb-4">Here are active jobs postings for your personalized career path:</h2>
-          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200"></div>
-          <div className="flex justify-between mt-8">
-            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer mr-2" onClick={() => setPage(4)}>
-              &#8249; Back
-            </button>
-            <button className="mt-4 self-end w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => setPage(6)}>
               Finish &#8250;
             </button>
           </div>
         </div>
       ) : (
-        <>
-          <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => window.location.reload()}>
-            Start over
-          </button>
-        </>
+        page === 5 && (
+          <>
+            <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer" onClick={() => window.location.reload()}>
+              Start over
+            </button>
+          </>
+        )
       )}
     </div>
   );
