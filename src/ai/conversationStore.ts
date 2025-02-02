@@ -149,34 +149,54 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    Based on the user's previous interactions, please generate three new, unique questions about their career path.
-    Do not repeat any questions that have already been asked.
+    You are a career advisor AI. Your task is to generate exactly three (3) new, unique, career-related questions for the user.
 
-    Previously asked questions:
+    Follow these strict rules:
+    - Output only the three questions.
+    - Each question must be on its own line.
+    - Do NOT include any extra text, explanations, or formatting.
+    - Ensure the questions are different from previously asked ones.
+
+    Previous questions:
     ${previousQuestions}
 
     User responses:
     ${previousAnswers}
 
-    Next career-related questions (each on a new line):
-  `;
+    Provide exactly three career-related questions (one per line) below:
+  `.trim();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response: any = await sendChatMessage(prompt);
-  console.log("Generated next career path questions:", response);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = await sendChatMessage(prompt);
 
-  const questions = response
-    .split('\n')
-    .map((q: string) => q.trim())
-    .filter((q: string) => q.length > 0);
+    if (typeof response !== "string") {
+      console.error("Invalid response format:", response);
+      throw new Error("sendChatMessage did not return a string");
+    }
 
-  store.addCareerQuestions(questions);
+    console.log("Generated next career path questions:", response);
 
-  return {
-    q1: questions[0] || "",
-    q2: questions[1] || "",
-    q3: questions[2] || ""
-  };
+    const questions = response
+      .split("\n")
+      .map((q: string) => q.trim())
+      .filter((q: string) => q.length > 0);
+
+    if (questions.length !== 3) {
+      throw new Error(`Expected 3 questions, but got ${questions.length}`);
+    }
+
+    store.addCareerQuestions(questions);
+
+    return {
+      q1: questions[0] || "",
+      q2: questions[1] || "",
+      q3: questions[2] || ""
+    };
+  } catch (error) {
+    console.error("Error requesting career path questions:", error);
+    return { q1: "", q2: "", q3: "" };
+  }
 }
 
 
