@@ -28,7 +28,7 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function RealEstate({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
+export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
   const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
   const CHARACTER_NAME = "Garfield";
 

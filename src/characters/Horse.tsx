@@ -4,7 +4,7 @@ import Horse from "../models/Horse";
 import { Html } from "@react-three/drei";
 import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
-import voiceline from "../assets/sfx/lebron.mp3";
+import voiceline from "../assets/sfx/horse.mp3";
 
 const voicelineAudio = new Audio(voiceline);
 
@@ -28,11 +28,12 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function RealEstate({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
+export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
   const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
   const CHARACTER_NAME = "Horse";
 
   const handleCharacterClicked = () => {
+    voicelineAudio.volume = 1;
     voicelineAudio.play();
     console.log("Character clicked");
     // dont allow convo to be opened if it has already been seen
