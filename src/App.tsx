@@ -244,7 +244,7 @@ function ResultsScreen() {
         </div>
       ) : (
         page === 3 && (
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
             <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
               <div className="w-1/3">
                 <CircularProgressBar percentage={gameResults.accuracy1} />
