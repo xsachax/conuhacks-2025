@@ -1,10 +1,10 @@
 import { RigidBody } from "@react-three/rapier";
 import Horse from "./characters/Horse";
-import Steve from "./models/Steve";
-import Wario from "./models/Wario";
+import Steve from "./characters/Steve";
+import Wario from "./characters/Wario";
 import Island from "./models/Island";
-import Yoda from "./models/Yoda";
-import Garfield from "./models/Garfield";
+import Yoda from "./characters/Yoda";
+import Garfield from "./characters/Garfield";
 import TranslationHelper from "./TranslationHelper";
 import type { Convo } from "./utils/store";
 import { useConvoStore } from "./utils/convoHelper";

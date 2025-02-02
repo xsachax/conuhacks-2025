@@ -55,7 +55,7 @@ export default function Convo() {
       <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible">
         {/* Character image and name */}
         <div className="flex items-center space-x-4 absolute top-0 left-0 transform -translate-x-1/3 -translate-y-1/3">
-          <img src={characterMap[currentCharacterName]} alt={currentCharacterName} className="w-40 h-40 rounded-full border-4 border-white shadow-lg" />
+          <img src={characterMap[currentCharacterName]} alt={currentCharacterName} className="w-40 h-40 rounded-full border-4 border-white shadow-lg bg-white" />
           <h2 className="text-2xl font-bold text-gray-900 mt-8">{currentCharacterName}</h2>
         </div>
 
