@@ -4,34 +4,36 @@ import { KeyboardControls } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Adventurer from "./models/Adventurer";
 import { Vector3, type Group } from "three";
+import { useConvoStore } from "./utils/convoHelper";
 
 type ActionName =
-| "CharacterArmature|Death"
-| "CharacterArmature|Gun_Shoot"
-| "CharacterArmature|HitRecieve"
-| "CharacterArmature|HitRecieve_2"
-| "CharacterArmature|Idle"
-| "CharacterArmature|Idle_Gun"
-| "CharacterArmature|Idle_Gun_Pointing"
-| "CharacterArmature|Idle_Gun_Shoot"
-| "CharacterArmature|Idle_Neutral"
-| "CharacterArmature|Idle_Sword"
-| "CharacterArmature|Interact"
-| "CharacterArmature|Kick_Left"
-| "CharacterArmature|Kick_Right"
-| "CharacterArmature|Punch_Left"
-| "CharacterArmature|Punch_Right"
-| "CharacterArmature|Roll"
-| "CharacterArmature|Run"
-| "CharacterArmature|Run_Back"
-| "CharacterArmature|Run_Left"
-| "CharacterArmature|Run_Right"
-| "CharacterArmature|Run_Shoot"
-| "CharacterArmature|Sword_Slash"
-| "CharacterArmature|Walk"
-| "CharacterArmature|Wave";
+  | "CharacterArmature|Death"
+  | "CharacterArmature|Gun_Shoot"
+  | "CharacterArmature|HitRecieve"
+  | "CharacterArmature|HitRecieve_2"
+  | "CharacterArmature|Idle"
+  | "CharacterArmature|Idle_Gun"
+  | "CharacterArmature|Idle_Gun_Pointing"
+  | "CharacterArmature|Idle_Gun_Shoot"
+  | "CharacterArmature|Idle_Neutral"
+  | "CharacterArmature|Idle_Sword"
+  | "CharacterArmature|Interact"
+  | "CharacterArmature|Kick_Left"
+  | "CharacterArmature|Kick_Right"
+  | "CharacterArmature|Punch_Left"
+  | "CharacterArmature|Punch_Right"
+  | "CharacterArmature|Roll"
+  | "CharacterArmature|Run"
+  | "CharacterArmature|Run_Back"
+  | "CharacterArmature|Run_Left"
+  | "CharacterArmature|Run_Right"
+  | "CharacterArmature|Run_Shoot"
+  | "CharacterArmature|Sword_Slash"
+  | "CharacterArmature|Walk"
+  | "CharacterArmature|Wave";
 
 export default function GameCharacter() {
+  const { convoActive } = useConvoStore();
   const characterRef = useRef<Group>(null);
   const [position, setPosition] = useState<Vector3>(new Vector3(-42, -2, -21));
 
@@ -47,12 +49,11 @@ export default function GameCharacter() {
     idle: "CharacterArmature|Idle",
     walk: "CharacterArmature|Walk",
     run: "CharacterArmature|Run",
-    jump: "CharacterArmature|HitRecieve", 
-    jumpIdle: "CharacterArmature|Run", 
+    jump: "CharacterArmature|HitRecieve",
+    jumpIdle: "CharacterArmature|Run",
     jumpLand: "CharacterArmature|Roll",
-    fall: "CharacterArmature|Run", 
+    fall: "CharacterArmature|Run",
   };
-  
 
   useFrame(() => {
     if (characterRef.current) {
@@ -66,7 +67,7 @@ export default function GameCharacter() {
   });
 
   return (
-    <KeyboardControls map={keyboardMap}>
+    <KeyboardControls map={convoActive ? [] : keyboardMap}>
       <Ecctrl
         position={position}
         mode="FixedCamera"
@@ -82,7 +83,7 @@ export default function GameCharacter() {
         }}
       >
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>
-          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.015} rotation={[1.5,0,0]} />
+          <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.015} rotation={[1.5, 0, 0]} />
         </EcctrlAnimation>
       </Ecctrl>
     </KeyboardControls>

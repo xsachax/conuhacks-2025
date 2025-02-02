@@ -16,10 +16,37 @@ interface ConvoState {
 
 export const useConvoStore = create<ConvoState>()((set) => ({
   convoActive: false,
-  currentCharacterName: "Bob",
+  currentCharacterName: "",
   currentPart: 1,
   currentQuestion: 1,
   seenCharacters: [],
+  answers: {
+    part1: {
+      a1: "",
+      a2: "",
+      a3: "",
+    },
+    part2: {
+      a1: "",
+      a2: "",
+      a3: "",
+    },
+    part3: {
+      a1: "",
+      a2: "",
+      a3: "",
+    },
+    part4: {
+      a1: "",
+      a2: "",
+      a3: "",
+    },
+    part5: {
+      a1: "",
+      a2: "",
+      a3: "",
+    },
+  },
   questions: {
     part1: {
       q1: "Part 1, Question 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -58,6 +85,17 @@ export const useConvoStore = create<ConvoState>()((set) => ({
       currentPart: properExit ? prevState.currentPart + 1 : prevState.currentPart,
       currentQuestion: 1,
       seenCharacters: properExit ? [...prevState.seenCharacters, prevState.currentCharacterName] : prevState.seenCharacters,
+      currentCharacterName: "",
+      answers: properExit
+        ? prevState.answers
+        : {
+            ...prevState.answers,
+            [`part${prevState.currentPart}`]: {
+              a1: "",
+              a2: "",
+              a3: "",
+            },
+          },
     })),
 
   updateQuestion: (part, qNumber, question) =>

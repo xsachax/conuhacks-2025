@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { useConvoStore, type ConvoOption } from "../utils/convoHelper";
+import { useConvoStore } from "../utils/convoHelper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { startSpeechToText } from "../speech_recognition/speechToText";
 
 export default function Convo() {
-  const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions } = useConvoStore();
+  const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
+  const [inputFieldValue, setInputFieldValue] = useState<string>("");
 
   if (!convoActive) return null;
 
   const handleNext = () => {
+    answers[`part${currentPart}`][`a${currentQuestion}`] = inputFieldValue;
     if (currentQuestion < 3) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       clearConvo(true);
     }
+    setInputFieldValue("");
     //log all the convo store values
-    console.log("currentCharacterName: ", currentCharacterName, "currentPart: ", currentPart, "currentQuestion: ", currentQuestion, "questions: ", questions);
+    console.log("currentCharacterName: ", currentCharacterName, "currentPart: ", currentPart, "currentQuestion: ", currentQuestion, "questions: ", questions, "answers: ", answers);
   };
 
   const handleBackdropClick = (event: React.MouseEvent | React.KeyboardEvent) => {
@@ -21,6 +27,13 @@ export default function Convo() {
       return;
     }
     clearConvo(false);
+  };
+
+  const handleSTT = () => {
+    setInputFieldValue("");
+    startSpeechToText().then((transcript) => {
+      setInputFieldValue(transcript);
+    });
   };
 
   return (
@@ -38,6 +51,21 @@ export default function Convo() {
             __html: questions[`part${currentPart}`][`q${currentQuestion}`],
           }}
         />
+
+        {/* Input field and microphone button */}
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            id="convo-input"
+            onChange={(e) => setInputFieldValue(e.target.value)}
+            value={inputFieldValue}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Type your response..."
+          />
+          <button type="button" onClick={handleSTT} className="p-2 px-3 h-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+            <FontAwesomeIcon icon={faMicrophone} />
+          </button>
+        </div>
 
         {/* Options or Next button */}
         <div className="flex justify-end gap-3 pt-4">

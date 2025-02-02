@@ -70,11 +70,11 @@ export default function RealEstate({ position, rotation, action }: { position: [
       </Html>
       <Proximity
         onEnter={() => {
-          console.log("In");
+          //console.log("In");
           setCurrentAction("CharacterArmature|Wave");
         }}
         onLeave={() => {
-          console.log("Out");
+          //console.log("Out");
           setCurrentAction("CharacterArmature|HitReact");
         }}
       >
