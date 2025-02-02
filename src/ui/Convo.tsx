@@ -8,7 +8,10 @@ import steve from "../assets/steve.jpg";
 import wario from "../assets/wario.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
+import finish from "../sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
+
+const finishAudio = new Audio(finish);
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
@@ -27,7 +30,7 @@ export default function Convo() {
     Steve: "Hello, my name is Steve. <br/><br/><strong>I'm still looking for my career treasure!</strong>",
     Wario: "Wahhhhh. <br/><br/><strong>I'm Wario. I'm-a gonna help you win!</strong>",
     Yoda: "Do or do not, there is no try. <br/><br/><strong>I can help you find your path.</strong>",
-    Horse: "Neigh. <br/><br/><strong>I'm a horse. I can help you find your inner strength.</strong>",
+    Horse: "Howdy. <br/><br/><strong>I'm a horse. I can help you find your inner strength.</strong>",
   };
 
   if (!convoActive) return null;
@@ -40,6 +43,7 @@ export default function Convo() {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       clearConvo(true);
+      finishAudio.play();
     }
     setInputFieldValue("");
     //log all the convo store values
@@ -66,7 +70,11 @@ export default function Convo() {
       <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible">
         {/* Character image and name */}
         <div className="flex items-center space-x-4 absolute top-0 left-0 transform -translate-x-1/3 -translate-y-1/3">
-          <img src={characterMap[currentCharacterName]} alt={currentCharacterName} className="w-40 h-40 rounded-full border-4 border-white shadow-lg bg-white" />
+          <img
+            src={characterMap[currentCharacterName]}
+            alt={currentCharacterName}
+            className="w-40 h-40 rounded-full border-4 border-white shadow-lg bg-white hover:scale-105 transition-all duration-300"
+          />
           <h2 className="text-2xl font-bold text-gray-900 mt-8">{currentCharacterName}</h2>
         </div>
 
@@ -83,7 +91,11 @@ export default function Convo() {
             <div className="flex justify-end gap-3 pt-4">
               <div className="flex flex-col w-full gap-2">
                 {currentQuestion <= 3 && (
-                  <button type="button" onClick={() => handleNext()} className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                  <button
+                    type="button"
+                    onClick={() => handleNext()}
+                    className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors hover:cursor-pointer"
+                  >
                     Start
                   </button>
                 )}
@@ -112,7 +124,7 @@ export default function Convo() {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Type your response..."
               />
-              <button type="button" onClick={handleSTT} className="p-2 px-3 h-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+              <button type="button" onClick={handleSTT} className="p-2 px-3 h-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors hover:cursor-pointer">
                 <FontAwesomeIcon icon={faMicrophone} />
               </button>
             </div>
@@ -120,7 +132,11 @@ export default function Convo() {
             <div className="flex justify-end gap-3 pt-4">
               <div className="flex flex-col w-full gap-2">
                 {currentQuestion <= 3 && (
-                  <button type="button" onClick={() => handleNext()} className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                  <button
+                    type="button"
+                    onClick={() => handleNext()}
+                    className="w-full mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors hover:cursor-pointer"
+                  >
                     {currentQuestion < 3 ? "Next" : "Finish"}
                   </button>
                 )}
