@@ -43,16 +43,16 @@ export default function GameCharacter() {
     { name: "jump", keys: ["Space"] },
     { name: "run", keys: ["Shift"] },
   ];
-
   const animationSet: Record<string, ActionName> = {
     idle: "CharacterArmature|Idle",
     walk: "CharacterArmature|Walk",
     run: "CharacterArmature|Run",
-    jump: "CharacterArmature|Run",
-    jumpIdle: "CharacterArmature|Run",
-    jumpLand: "CharacterArmature|Run",
-    fall: "CharacterArmature|Run",
+    jump: "CharacterArmature|HitRecieve", 
+    jumpIdle: "CharacterArmature|Run", 
+    jumpLand: "CharacterArmature|Roll",
+    fall: "CharacterArmature|Run", 
   };
+  
 
   useFrame(() => {
     if (characterRef.current) {
