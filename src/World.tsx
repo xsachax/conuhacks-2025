@@ -6,6 +6,7 @@ import Wario from "./models/Wario";
 import Peter from "./models/Peter";
 import Island from "./models/Island";
 import TranslationHelper from "./TranslationHelper";
+import type { Convo } from "./utils/store";
 
 export default function World() {
   return (
@@ -25,3 +26,21 @@ export default function World() {
     </>
   );
 }
+
+// Convos
+
+const horseConvo: Convo = {
+  stage: "stage1",
+  character: "Horse1",
+  text: "Hi there! Hello world!",
+  options: [
+    {
+      text: "This is the text field",
+      next: {
+        stage: "stage1",
+        character: "Horse1",
+        text: "This is the next text field",
+      },
+    },
+  ],
+};
