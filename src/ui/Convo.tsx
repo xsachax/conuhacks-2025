@@ -3,10 +3,23 @@ import { useConvoStore } from "../utils/convoHelper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { startSpeechToText } from "../speech_recognition/speechToText";
+import garfield from "../assets/garfield.jpg";
+import steve from "../assets/steve.jpg";
+import wario from "../assets/wario.png";
+import yoda from "../assets/yoda.jpg";
+import horse from "../assets/horse.jpg";
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
   const [inputFieldValue, setInputFieldValue] = useState<string>("");
+
+  const characterMap = {
+    Garfield: garfield,
+    Steve: steve,
+    Wario: wario,
+    Yoda: yoda,
+    Horse: horse,
+  };
 
   if (!convoActive) return null;
 
@@ -39,14 +52,17 @@ export default function Convo() {
   return (
     <div className="fixed inset-0 z-[999999999] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={handleBackdropClick} onKeyDown={handleBackdropClick} role="button" tabIndex={0} aria-label="Close convo" />
-      <div className="relative bg-white rounded-lg p-6 max-w-2xl w-full mx-4 space-y-4">
-        {/* Character name */}
-        <h2 className="text-xl font-bold text-gray-900">{currentCharacterName}</h2>
+      <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible">
+        {/* Character image and name */}
+        <div className="flex items-center space-x-4 absolute top-0 left-0 transform -translate-x-1/3 -translate-y-1/3">
+          <img src={characterMap[currentCharacterName]} alt={currentCharacterName} className="w-40 h-40 rounded-full border-4 border-white shadow-lg" />
+          <h2 className="text-2xl font-bold text-gray-900 mt-8">{currentCharacterName}</h2>
+        </div>
 
         {/* Convo text */}
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <p
-          className="text-gray-700 whitespace-pre-line"
+          className="text-gray-700 whitespace-pre-line mt-24"
           dangerouslySetInnerHTML={{
             __html: questions[`part${currentPart}`][`q${currentQuestion}`],
           }}
@@ -67,7 +83,6 @@ export default function Convo() {
           </button>
         </div>
 
-        {/* Options or Next button */}
         <div className="flex justify-end gap-3 pt-4">
           <div className="flex flex-col w-full gap-2">
             {currentQuestion <= 3 && (
