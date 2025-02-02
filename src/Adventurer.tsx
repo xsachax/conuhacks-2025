@@ -63,7 +63,7 @@ export default function GameCharacter() {
       const worldPosition = new Vector3();
       characterRef.current.getWorldPosition(worldPosition);
       // console.log(worldPosition.y)
-      if (worldPosition.y < -15) {
+      if (worldPosition.y < -20) {
         setPosition(new Vector3(-41.93, -11, -33.13));
         boomAudio.play();
       }

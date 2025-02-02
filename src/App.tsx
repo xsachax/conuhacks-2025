@@ -80,12 +80,12 @@ export default function App() {
   />
   <span
     style={{
-      position: "absolute",  // Make it float above the bar
+      position: "absolute",
       marginLeft: "10px",
       color: "#fff",
       fontWeight: "bold",
-      right: 0, // Position it to the right of the bar
-      paddingRight: "10px", // Optional, to avoid overlap
+      right: 0, 
+      paddingRight: "10px", 
     }}
   >
     {`${progress * 20}%`}
