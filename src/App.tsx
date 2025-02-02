@@ -14,11 +14,9 @@ import Island from "./models/Island";
 import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversationStore";
 
 export default function App() {
-  //const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
   const { convoActive } = useConvoStore();
   const [audioPlayed, setAudioPlayed] = useState(false);
-  const { isGameStarted, setGameStarted, isGameEnded, setGameEnded } = useGameStore();
+  const { isGameStarted, setGameStarted, isGameEnded, setGameEnded, progress } = useGameStore();
 
   const handleUserInteraction = () => {
     if (!audioPlayed) {
@@ -48,7 +46,7 @@ export default function App() {
     <>
       {convoActive && <Convo />}
       <Canvas shadows camera={{ position: [0, 5, 120], fov: 80 }}>
-        <Perf position="top-left" />
+        {/* <Perf position="top-left" /> */}
         <Physics timeStep="vary">
           <Lights />
           <Sky distance={1000} sunPosition={[-100, -1, -10]} inclination={0.5} azimuth={0.25} />
@@ -58,6 +56,44 @@ export default function App() {
           </Suspense>
         </Physics>
       </Canvas>
+      <div
+  style={{
+    position: "absolute",
+    top: 1,
+    right: 1,
+    marginRight: "1%",
+    marginTop: "1%",
+    borderRadius: "8px",
+    width: "30%",
+    height: "30px",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    alignItems: "center",
+  }}
+>
+  <div
+    style={{
+      borderRadius: "8px",
+      width: `${progress * 20}%`,
+      height: "100%",
+      backgroundColor: "#3cc85a",
+      transition: "width 0.3s ease-in-out",
+    }}
+  />
+  <span
+    style={{
+      position: "absolute",
+      marginLeft: "10px",
+      color: "#fff",
+      fontWeight: "bold",
+      right: 0, 
+      paddingRight: "10px", 
+    }}
+  >
+    {`${progress * 20}%`}
+  </span>
+</div>
+
     </>
   );
 }

@@ -11,6 +11,7 @@ import horse from "../assets/horse.jpg";
 import finish from "../assets/sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
 import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
+import { useGameStore } from "../utils/gameStore";
 
 const finishAudio = new Audio(finish);
 
@@ -47,6 +48,7 @@ export default function Convo() {
       clearConvo(true);
       finishAudio.play();
       submitAnswers(answers[`part${currentPart}`]);
+      useGameStore.getState().incrementProgress();
       requestNextCareerPathQuestions();
     }
     setInputFieldValue("");
