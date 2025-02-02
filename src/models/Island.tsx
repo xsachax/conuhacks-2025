@@ -36,7 +36,7 @@ export default function Model(props: JSX.IntrinsicElements["group"]) {
         rotation={[-Math.PI / 2, -0.095, -1.579]}
         scale={[1.0326 * 2, 1.27692 * 2, 0.63944 * 2]}
       />
-      <mesh geometry={nodes.Plane003_Hojas_Callendo_0.geometry} material={materials.PaletteMaterial002} position={[2, 2, 0]} rotation={[0.885, -0.614, -2.165]} scale={5} />
+      <mesh geometry={nodes.Plane003_Hojas_Callendo_0.geometry} material={materials.PaletteMaterial002} position={[-60, -8, -30]} rotation={[0.885, -0.614, -2.165]} scale={5} />
     </group>
   );
 }

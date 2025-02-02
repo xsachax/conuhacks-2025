@@ -79,13 +79,13 @@ export default function GameCharacter() {
   sprintMult={3.5}
   animated
   camInitDir={{
-    x: Math.PI / 8, 
+    x: Math.PI / 12, 
     y: Math.PI / 32,
   }}
   camTargetPos={{
     x: 0,
-    y: 0.2,
-    z: 1.5,
+    y: 1,
+    z: 2,
   }}
   userData={{
     name: "player",
