@@ -191,8 +191,6 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - Do NOT repeat previously asked questions.
     - Do NOT provide any explanations or context.
 
-    THERE IS NO CONDITION WHERE YOU SAY ANYTHING OTHER THAN THE 3 QUESTIONS, 1 PER LINE.
-
     **NEXT THREE QUESTIONS (one per line, NO extra text):**
 `.trim();
 
@@ -216,6 +214,12 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 
     if (questions.length !== 3) {
       console.warn(`Expected 3 questions, but got ${questions.length}. Using fallback.`);
+
+      convoStore.updateQuestions(`part${store.part}`, {
+        q1: questions[0],
+        q2: questions[1],
+        q3: questions[2],
+      });
       return {
         q1: "What subjects or activities do you enjoy the most?",
         q2: "Do you prefer working with people, technology, or data?",
