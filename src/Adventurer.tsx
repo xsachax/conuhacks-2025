@@ -33,7 +33,7 @@ type ActionName =
 
 export default function GameCharacter() {
   const characterRef = useRef<Group>(null);
-  const [position, setPosition] = useState<Vector3>(new Vector3(-42, -2, -21));
+  const [position, setPosition] = useState<Vector3>(new Vector3(-41.93, -11, -33.13));
 
   const keyboardMap = [
     { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -60,7 +60,7 @@ export default function GameCharacter() {
       characterRef.current.getWorldPosition(worldPosition);
       // console.log(worldPosition.y)
       if (worldPosition.y < -15) {
-        setPosition(new Vector3(-42, -2, -21));
+        setPosition(new Vector3(-41.93, -11, -33.13));
       }
     }
   });
