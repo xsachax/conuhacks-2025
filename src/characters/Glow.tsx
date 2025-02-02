@@ -45,7 +45,6 @@ export default function Character({ position, rotation, action }: { position: [n
   const { setConvoActive, seenCharacters, setCurrentCharacterName } = useConvoStore();
 
   return (
-    console.log("Character rendered"),
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
     <group position={position} rotation={rotation} onClick={handleCharacterClicked}>
       <Html position={[-30, 2.5, 20]} center scale={0.05}>
