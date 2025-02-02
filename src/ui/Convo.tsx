@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useConvoStore } from "../utils/convoHelper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
@@ -12,12 +12,20 @@ import finish from "../assets/sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
 import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
 import { useGameStore } from "../utils/gameStore";
+import "./Convo.css";
 
 const finishAudio = new Audio(finish);
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
   const [inputFieldValue, setInputFieldValue] = useState<string>("");
+  const [animationClass, setAnimationClass] = useState<string>("");
+
+  useEffect(() => {
+    if (convoActive) {
+      setAnimationClass("flip-in slide-in");
+    }
+  }, [convoActive]);
 
   const characterMap = {
     Garfield: garfield,
@@ -71,9 +79,9 @@ export default function Convo() {
   };
 
   return (
-    <div className="fixed inset-0 z-[999999999] flex items-center justify-center">
+    <div className={`fixed inset-0 z-[999999999] flex items-center justify-center`}>
       <div className="absolute inset-0 bg-black/50" onClick={handleBackdropClick} onKeyDown={handleBackdropClick} role="button" tabIndex={0} aria-label="Close convo" />
-      <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible">
+      <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible slide-in">
         {/* Character image and name */}
         <div className="flex items-center space-x-4 absolute top-0 left-0 transform -translate-x-1/3 -translate-y-1/3">
           <img
