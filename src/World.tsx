@@ -26,7 +26,7 @@ export default function World() {
       {/* <Wario position={[-55, -13.2, -10]} rotation={[0, -4.3, 0]} /> */}
       <Krabs position={[-55, -11.9, -10]} rotation={[0, -4.3, 0]} />
       <Yoda position={[-78.6, -11.87, 35.0]} rotation={[0, -4.3, 0]} />
-      <Glow position={[-14, -3, 35.0]} rotation={[0, 0, 0]} />
+      <Glow position={[-45, -8, 50.0]} rotation={[0, 0, 0]} />
     </>
   );
 }
