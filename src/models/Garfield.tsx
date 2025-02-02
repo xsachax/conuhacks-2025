@@ -13,6 +13,7 @@ import React from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF, SkeletonUtils } from 'three-stdlib'
+import { RigidBody } from '@react-three/rapier'
 
 type ActionName = 'mixamo.com'
 
@@ -55,14 +56,16 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   }, [actions])
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <primitive object={nodes._rootJoint} />
-        <skinnedMesh name="Object_6" geometry={nodes.Object_6.geometry} material={materials.mesh0012matmat} skeleton={nodes.Object_6.skeleton} scale={0.01} />
-        <skinnedMesh name="Object_8" geometry={nodes.Object_8.geometry} material={materials.mesh0019matmat} skeleton={nodes.Object_8.skeleton} scale={0.01} />
-        <skinnedMesh name="Object_9" geometry={nodes.Object_9.geometry} material={materials.mesh0021matmat} skeleton={nodes.Object_9.skeleton} scale={0.01} />
+    <RigidBody colliders="trimesh" lockRotations={true}>
+      <group ref={group} {...props} dispose={null}>
+        <group name="Sketchfab_Scene">
+          <primitive object={nodes._rootJoint} />
+          <skinnedMesh name="Object_6" geometry={nodes.Object_6.geometry} material={materials.mesh0012matmat} skeleton={nodes.Object_6.skeleton} scale={0.01} />
+          <skinnedMesh name="Object_8" geometry={nodes.Object_8.geometry} material={materials.mesh0019matmat} skeleton={nodes.Object_8.skeleton} scale={0.01} />
+          <skinnedMesh name="Object_9" geometry={nodes.Object_9.geometry} material={materials.mesh0021matmat} skeleton={nodes.Object_9.skeleton} scale={0.01} />
+        </group>
       </group>
-    </group>
+    </RigidBody>
   )
 }
 

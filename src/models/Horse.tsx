@@ -8,6 +8,7 @@ import * as THREE from "three";
 import React from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { RigidBody } from "@react-three/rapier";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -22,9 +23,11 @@ type GLTFResult = GLTF & {
 export default function Model(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/models/horse-transformed.glb") as GLTFResult;
   return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.horse.geometry} material={materials.PaletteMaterial001} />
-    </group>
+    <RigidBody colliders="trimesh" lockRotations={true}>
+      <group {...props} dispose={null}>
+        <mesh geometry={nodes.horse.geometry} material={materials.PaletteMaterial001} />
+      </group>
+    </RigidBody>
   );
 }
 

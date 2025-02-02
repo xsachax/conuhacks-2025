@@ -35,7 +35,7 @@ type ActionName =
 export default function GameCharacter() {
   const { convoActive } = useConvoStore();
   const characterRef = useRef<Group>(null);
-  const [position, setPosition] = useState<Vector3>(new Vector3(-42, -2, -21));
+  const [position, setPosition] = useState<Vector3>(new Vector3(-41.93, -11, -33.13));
 
   const keyboardMap = [
     { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -61,7 +61,7 @@ export default function GameCharacter() {
       characterRef.current.getWorldPosition(worldPosition);
       // console.log(worldPosition.y)
       if (worldPosition.y < -15) {
-        setPosition(new Vector3(-42, -2, -21));
+        setPosition(new Vector3(-41.93, -11, -33.13));
       }
     }
   });
@@ -69,19 +69,24 @@ export default function GameCharacter() {
   return (
     <KeyboardControls map={convoActive ? [] : keyboardMap}>
       <Ecctrl
-        position={position}
-        mode="FixedCamera"
-        maxVelLimit={5}
-        sprintMult={3}
-        animated
-        camInitDir={{
-          x: Math.PI / 8,
-          y: Math.PI / 32,
-        }}
-        userData={{
-          name: "player",
-        }}
-      >
+  position={position}
+  mode="FixedCamera"
+  maxVelLimit={5}
+  sprintMult={1.8}
+  animated
+  camInitDir={{
+    x: Math.PI / 8, 
+    y: Math.PI / 32,
+  }}
+  camTargetPos={{
+    x: 0,
+    y: 0.2,
+    z: 1.5,
+  }}
+  userData={{
+    name: "player",
+  }}
+>
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>
           <Adventurer ref={characterRef} position={[0, -0.85, 0]} scale={0.015} rotation={[1.5, 0, 0]} />
         </EcctrlAnimation>
