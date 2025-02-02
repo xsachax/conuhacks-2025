@@ -11,6 +11,7 @@ import horse from "../assets/horse.jpg";
 import finish from "../sfx/finish.mp3";
 
 const finishAudio = new Audio(finish);
+import { Typewriter } from "react-simple-typewriter";
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
@@ -95,12 +96,16 @@ export default function Convo() {
           </>
         ) : (
           <>
-            <p
-              className="text-gray-700 whitespace-pre-line mt-24"
-              dangerouslySetInnerHTML={{
-                __html: questions[`part${currentPart}`][`q${currentQuestion}`],
-              }}
-            />
+            <div className="text-gray-700 whitespace-pre-line mt-24">
+              <Typewriter
+                key={`${currentPart}-${currentQuestion}`}
+                words={[questions[`part${currentPart}`][`q${currentQuestion}`]]}
+                loop={1}
+                cursor
+                cursorStyle=""
+                typeSpeed={20}
+              />
+            </div>
 
             <div className="flex items-center gap-2">
               <input
