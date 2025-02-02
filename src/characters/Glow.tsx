@@ -45,9 +45,10 @@ export default function Character({ position, rotation, action }: { position: [n
   const { setConvoActive, seenCharacters, setCurrentCharacterName } = useConvoStore();
 
   return (
+    console.log("Character rendered"),
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
     <group position={position} rotation={rotation} onClick={handleCharacterClicked}>
-      <Html position={[0, 5.5, 0]} center scale={0.05}>
+      <Html position={[-30, 2.5, 20]} center scale={0.05}>
         <div className="relative select-none">
           <div className="bg-white px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200">
             <div

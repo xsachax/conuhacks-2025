@@ -5,7 +5,7 @@ import Island from "./models/Island";
 import Yoda from "./characters/Yoda";
 import Garfield from "./characters/Garfield";
 import Krabs from "./characters/Krabs";
-import Glow from "./models/Glow";
+import Glow from "./characters/Glow";
 import TranslationHelper from "./TranslationHelper";
 import { useGameStore } from "./utils/gameStore";
 
@@ -26,7 +26,7 @@ export default function World() {
       {/* <Wario position={[-55, -13.2, -10]} rotation={[0, -4.3, 0]} /> */}
       <Krabs position={[-55, -11.9, -10]} rotation={[0, -4.3, 0]} />
       <Yoda position={[-78.6, -11.87, 35.0]} rotation={[0, -4.3, 0]} />
-      <Glow position={[-25, -5, 30.0]} rotation={[0, 0, 0]} />
+      <Glow position={[-14, -3, 35.0]} rotation={[0, 0, 0]} />
     </>
   );
 }
