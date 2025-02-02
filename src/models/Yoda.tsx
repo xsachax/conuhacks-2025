@@ -12,6 +12,7 @@ import * as THREE from 'three'
 import React from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { RigidBody } from '@react-three/rapier'
 
 type ActionName = 'Take 001'
 
@@ -68,83 +69,85 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   }, [actions])
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <group name="Object_2">
-          <group name="RootNode">
-            <group name="callouxGroup28251">
-              <group name="polySurface1" position={[0, 0.23, 0]}>
-                <mesh name="polySurface1_lambert1_0" geometry={nodes.polySurface1_lambert1_0.geometry} material={materials.lambert1} />
+    <RigidBody colliders="trimesh" lockRotations={true}>
+      <group ref={group} {...props} dispose={null}>
+        <group name="Sketchfab_Scene">
+          <group name="Object_2">
+            <group name="RootNode">
+              <group name="callouxGroup28251">
+                <group name="polySurface1" position={[0, 0.23, 0]}>
+                  <mesh name="polySurface1_lambert1_0" geometry={nodes.polySurface1_lambert1_0.geometry} material={materials.lambert1} />
+                </group>
+                <group name="polySurface2">
+                  <mesh name="polySurface2_lambert1_0" geometry={nodes.polySurface2_lambert1_0.geometry} material={materials.lambert1} />
+                </group>
+                <group name="transform1" />
               </group>
-              <group name="polySurface2">
-                <mesh name="polySurface2_lambert1_0" geometry={nodes.polySurface2_lambert1_0.geometry} material={materials.lambert1} />
+              <group name="callouxGroup6879">
+                <mesh name="callouxGroup6879_lambert1_0" geometry={nodes.callouxGroup6879_lambert1_0.geometry} material={materials.lambert1} />
               </group>
-              <group name="transform1" />
-            </group>
-            <group name="callouxGroup6879">
-              <mesh name="callouxGroup6879_lambert1_0" geometry={nodes.callouxGroup6879_lambert1_0.geometry} material={materials.lambert1} />
-            </group>
-            <group name="ZBrush_defualt_group">
-              <mesh name="ZBrush_defualt_group_defaultMat_0" geometry={nodes.ZBrush_defualt_group_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group1">
-              <mesh name="Group1_defaultMat_0" geometry={nodes.Group1_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group2">
-              <mesh name="Group2_defaultMat_0" geometry={nodes.Group2_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group3">
-              <mesh name="Group3_defaultMat_0" geometry={nodes.Group3_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group4">
-              <mesh name="Group4_defaultMat_0" geometry={nodes.Group4_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group5">
-              <mesh name="Group5_defaultMat_0" geometry={nodes.Group5_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group6">
-              <mesh name="Group6_defaultMat_0" geometry={nodes.Group6_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group7">
-              <mesh name="Group7_defaultMat_0" geometry={nodes.Group7_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group8">
-              <mesh name="Group8_defaultMat_0" geometry={nodes.Group8_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group9">
-              <mesh name="Group9_defaultMat_0" geometry={nodes.Group9_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group10">
-              <mesh name="Group10_defaultMat_0" geometry={nodes.Group10_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group11">
-              <mesh name="Group11_defaultMat_0" geometry={nodes.Group11_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group12">
-              <mesh name="Group12_defaultMat_0" geometry={nodes.Group12_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group13">
-              <mesh name="Group13_defaultMat_0" geometry={nodes.Group13_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group14">
-              <mesh name="Group14_defaultMat_0" geometry={nodes.Group14_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group15">
-              <mesh name="Group15_defaultMat_0" geometry={nodes.Group15_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group16">
-              <mesh name="Group16_defaultMat_0" geometry={nodes.Group16_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group27">
-              <mesh name="Group27_defaultMat_0" geometry={nodes.Group27_defaultMat_0.geometry} material={materials.defaultMat} />
-            </group>
-            <group name="Group30">
-              <mesh name="Group30_defaultMat_0" geometry={nodes.Group30_defaultMat_0.geometry} material={materials.defaultMat} />
+              <group name="ZBrush_defualt_group">
+                <mesh name="ZBrush_defualt_group_defaultMat_0" geometry={nodes.ZBrush_defualt_group_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group1">
+                <mesh name="Group1_defaultMat_0" geometry={nodes.Group1_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group2">
+                <mesh name="Group2_defaultMat_0" geometry={nodes.Group2_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group3">
+                <mesh name="Group3_defaultMat_0" geometry={nodes.Group3_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group4">
+                <mesh name="Group4_defaultMat_0" geometry={nodes.Group4_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group5">
+                <mesh name="Group5_defaultMat_0" geometry={nodes.Group5_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group6">
+                <mesh name="Group6_defaultMat_0" geometry={nodes.Group6_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group7">
+                <mesh name="Group7_defaultMat_0" geometry={nodes.Group7_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group8">
+                <mesh name="Group8_defaultMat_0" geometry={nodes.Group8_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group9">
+                <mesh name="Group9_defaultMat_0" geometry={nodes.Group9_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group10">
+                <mesh name="Group10_defaultMat_0" geometry={nodes.Group10_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group11">
+                <mesh name="Group11_defaultMat_0" geometry={nodes.Group11_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group12">
+                <mesh name="Group12_defaultMat_0" geometry={nodes.Group12_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group13">
+                <mesh name="Group13_defaultMat_0" geometry={nodes.Group13_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group14">
+                <mesh name="Group14_defaultMat_0" geometry={nodes.Group14_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group15">
+                <mesh name="Group15_defaultMat_0" geometry={nodes.Group15_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group16">
+                <mesh name="Group16_defaultMat_0" geometry={nodes.Group16_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group27">
+                <mesh name="Group27_defaultMat_0" geometry={nodes.Group27_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
+              <group name="Group30">
+                <mesh name="Group30_defaultMat_0" geometry={nodes.Group30_defaultMat_0.geometry} material={materials.defaultMat} />
+              </group>
             </group>
           </group>
         </group>
-      </group>
-    </group>
+      </group>  
+    </RigidBody>
   )
 }
 
