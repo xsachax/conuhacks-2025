@@ -25,7 +25,12 @@ export default function App() {
           // debug
         >
           <Lights />
-          <Sky distance={0} sunPosition={[-10, 1, 0]} inclination={0.5} azimuth={0.25} />
+          <Sky
+            distance={1000} 
+            sunPosition={[-100, -1, -10]}
+            inclination={0.5}
+            azimuth={0.25}
+          />
           <Suspense fallback={null}>
             <Adventurer />
             <World />
