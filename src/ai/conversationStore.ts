@@ -147,33 +147,39 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
   const store = useConversationStore.getState();
   const convoStore = useConvoStore.getState(); 
 
+  const currentPart = store.part;
   const previousQuestions = store.careerQuestions.join("\n");
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    You are an expert career advisor AI. Your task is to help the user discover different career paths based on their interests, skills, and preferences.
+    You are an expert AI career advisor guiding the user through a structured **five-part** conversation to identify their best-fit career path. 
+    This process involves 15 targeted questions over 5 stages, rapidly narrowing down career options.
 
-    Follow these strict rules:
-    - Output exactly three (3) career-related questions.
-    - Each question must be on a separate line.
-    - Do NOT include any extra text, explanations, or formatting.
-    - Tailor the questions to guide the user toward identifying specific career fields.
-    - Ensure the questions are different from previously asked ones.
+    **CURRENT STAGE: Part ${currentPart}/5**
+    **STRICT RULES:**
+    - You MUST output exactly three (3) career-related questions.
+    - Each question MUST be on its own line with NO extra text, explanations, formatting, or additional context.
+    - The conversation MUST progress logically: 
+        - **Stage 1 (Interest Discovery - Questions 1-3):** Identify passions, hobbies, and natural skills.
+        - **Stage 2 (Work Preferences - Questions 4-6):** Hands-on vs. theoretical, teamwork vs. solo, structured vs. flexible environments.
+        - **Stage 3 (Career Direction - Questions 7-9):** Suggest broad career categories based on interests and preferences.
+        - **Stage 4 (Refinement - Questions 10-12):** Narrow down to specific roles within a field, discussing daily responsibilities.
+        - **Stage 5 (Realities - Questions 13-15):** Cover job stability, salary expectations, required education, and long-term growth.
 
-    Consider these aspects when generating questions:
-    - The user's background, interests, and previous answers.
-    - Their preferred learning style and work environment (teamwork vs solo).
-    - Their problem-solving approach.
-    - Careers they may not have considered but would be a good fit for their skills.
+    **USER CONTEXT:**
+    - Previously asked questions:
+      ${previousQuestions}
+    - User responses:
+      ${previousAnswers}
 
-    Previous questions:
-    ${previousQuestions}
+    **GENERATE THE NEXT THREE QUESTIONS STRICTLY FOLLOWING THE FORMAT BELOW:**
+    - Each question should be SHORT, DIRECT, and focused on quickly guiding the user to a specific career.
+    - Do NOT repeat previously asked questions.
+    - Do NOT provide any explanations or context.
 
-    User responses:
-    ${previousAnswers}
-
-    Generate exactly three career-related questions that will help them explore different career options (one per line) below:
+    **NEXT THREE QUESTIONS (one per line, NO extra text):**
   `.trim();
+
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -192,7 +198,12 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
       .filter((q: string) => q.length > 0);
 
     if (questions.length !== 3) {
-      throw new Error(`Expected 3 questions, but got ${questions.length}`);
+      console.warn(`Expected 3 questions, but got ${questions.length}. Using fallback.`);
+      return {
+        q1: "What subjects or activities do you enjoy the most?",
+        q2: "Do you prefer working with people, technology, or data?",
+        q3: "Would you rather work in a structured office environment or a more flexible setting?"
+      };
     }
 
     store.addCareerQuestions(questions);
@@ -202,7 +213,7 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
       q2: questions[1],
       q3: questions[2],
     });
-    
+
     return {
       q1: questions[0] || "",
       q2: questions[1] || "",
