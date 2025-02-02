@@ -152,10 +152,11 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    You are an expert AI career advisor guiding the user through a structured **five-part** conversation to identify their best-fit career path. 
+    You are an expert AI career advisor guiding the user through a structured five-part conversation to identify their best-fit career path.
     This process involves 15 targeted questions over 5 stages, rapidly narrowing down career options.
 
-    **CURRENT STAGE: Part ${currentPart}/5**
+    **CURRENT STAGE: Stage ${currentPart}/5**
+    
     **STRICT RULES:**
     - You MUST output exactly three (3) career-related questions.
     - Each question MUST be on its own line with NO extra text, explanations, formatting, or additional context.
@@ -172,6 +173,13 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
     - User responses:
       ${previousAnswers}
 
+    **INSTRUCTIONS:**
+    - Use the user’s answers to determine which careers best fit them.
+    - By the end of Stage 2, you MUST suggest at least one real career category (e.g., Engineering, Healthcare, Business).
+    - By Stage 3, you MUST suggest specific job titles (e.g., Software Engineer, Nurse, Data Scientist).
+    - By Stage 4If the user’s responses align with multiple careers, guide them toward making a choice.
+    - By Stage 5, questions should focus on real-world considerations like salary, required education, and job stability.
+
     **GENERATE THE NEXT THREE QUESTIONS STRICTLY FOLLOWING THE FORMAT BELOW:**
     - Each question should be SHORT, DIRECT, and focused on quickly guiding the user to a specific career.
     - Do NOT repeat previously asked questions.
@@ -179,7 +187,6 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 
     **NEXT THREE QUESTIONS (one per line, NO extra text):**
   `.trim();
-
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
