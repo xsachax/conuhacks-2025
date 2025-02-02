@@ -57,50 +57,49 @@ export default function App() {
         </Physics>
       </Canvas>
       <div
-  style={{
-    position: "absolute",
-    top: 1,
-    right: 1,
-    marginRight: "1%",
-    marginTop: "1%",
-    borderRadius: "8px",
-    width: "30%",
-    height: "30px",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    alignItems: "center",
-  }}
->
-  <div
-    style={{
-      borderRadius: "8px",
-      width: `${progress * 20}%`,
-      height: "100%",
-      backgroundColor: "#3cc85a",
-      transition: "width 0.3s ease-in-out",
-    }}
-  />
-  <span
-    style={{
-      position: "absolute",
-      marginLeft: "10px",
-      color: "#fff",
-      fontWeight: "bold",
-      right: 0, 
-      paddingRight: "10px", 
-    }}
-  >
-    {`${progress * 20}%`}
-  </span>
-</div>
-
+        style={{
+          position: "absolute",
+          top: 1,
+          right: 1,
+          marginRight: "1%",
+          marginTop: "1%",
+          borderRadius: "8px",
+          width: "30%",
+          height: "30px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            borderRadius: "8px",
+            width: `${progress * 20}%`,
+            height: "100%",
+            backgroundColor: "#3cc85a",
+            transition: "width 0.3s ease-in-out",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            marginLeft: "10px",
+            color: "#fff",
+            fontWeight: "bold",
+            right: 0,
+            paddingRight: "10px",
+          }}
+        >
+          {`${progress * 20}%`}
+        </span>
+      </div>
     </>
   );
 }
 
 function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
-  const [age, setAge] = useState("");
-  const [status, setStatus] = useState("");
+  const [age, setAge] = useState(18);
+  const [status, setStatus] = useState("Undergrad Student");
   const [goal, setGoal] = useState("");
 
   const handleGameStart = () => {
@@ -127,19 +126,35 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
       <div className="bg-white p-8 rounded-lg">
         <h1 className="text-4xl font-bold text-center">Welcome to the Adventure</h1>
         <form className="space-y-4 mt-8">
+          <label className="block text-gray-600">Age</label>
           <div>
-            <label className="block text-gray-600">Age</label>
-            <input type="text" className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3" placeholder="18" value={age} onChange={(e) => setAge(e.target.value)} />
+            <input
+              type="range"
+              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-0"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              min="1"
+              max="100"
+              step="1"
+              style={{ width: "100%" }}
+            />
+            <div className="flex justify-between text-xs text-gray-600">
+              <span>{age}</span>
+            </div>
           </div>
           <div>
             <label className="block text-gray-600">Current Professional Status</label>
-            <input
-              type="text"
-              className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3"
-              placeholder="Student"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            />
+            <select className="mt-1 block w-full border-2 border-gray-300 rounded-md p-3" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="Undergrad Student" disabled>
+                Select status
+              </option>
+              <option value="student">High School Student</option>
+              <option value="student">Undergraduate Student</option>
+              <option value="student">Graduate Student</option>
+              <option value="teacher">New-Grad</option>
+              <option value="admin">Professional</option>
+              <option value="admin">Senior Professional</option>
+            </select>
           </div>
           <div>
             <label className="block text-gray-600">Career Goal</label>
