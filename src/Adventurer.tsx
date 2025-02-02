@@ -52,6 +52,7 @@ export default function GameCharacter() {
     if (characterRef.current) {
       const worldPosition = new Vector3();
       characterRef.current.getWorldPosition(worldPosition);
+      // console.log(worldPosition.y)
       if (worldPosition.y < -15) {
         setPosition(new Vector3(-42, -2, -21));
       }
@@ -71,7 +72,7 @@ export default function GameCharacter() {
           y: Math.PI / 2,
         }}
         userData={{
-          name: "player2",
+          name: "player",
         }}
       >
         <EcctrlAnimation characterURL="/models/adventurer-transformed.glb" animationSet={animationSet}>

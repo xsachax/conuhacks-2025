@@ -1,6 +1,7 @@
 import { RigidBody } from "@react-three/rapier";
 import Horse from "./models/Horse";
-import Heaven from "./models/Heaven";
+import Island from "./models/Island";
+import TranslationHelper from "./TranslationHelper";
 
 export default function World() {
   return (
@@ -8,10 +9,11 @@ export default function World() {
       <group scale={4}>
         {/* Ground and static elements */}
         <RigidBody type="fixed" colliders="trimesh">
-          <Heaven />
+          <Island />
         </RigidBody>
       </group>
-      <Horse position={[0, 0, 0]} rotation={[0, 0, 0]} dialog={{}} />
+      <TranslationHelper position={[0, 0, 0]} />
+      <Horse position={[-4, -4.01, 20]} rotation={[0, 160, 0]} scale={2} dialog={{}} />
     </>
   );
 }

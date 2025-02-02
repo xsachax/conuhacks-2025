@@ -26,12 +26,15 @@ type GLTFResult = GLTF & {
 
 export default function Model(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/models/heaven-transformed.glb") as GLTFResult;
+  materials.PaletteMaterial002.color = new THREE.Color(0x1e90ff); // Change color to blue
+  materials.PaletteMaterial002.roughness = 0.1; // Adjust roughness for water
+  materials.PaletteMaterial002.metalness = 0.8; // Adjust metalness for water
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.geo1_Wood_0.geometry} material={materials.PaletteMaterial001} scale={0.5} position={[-10, -1, -2.635]} />
-      <mesh geometry={nodes.Terrain_Water1_0.geometry} material={materials.PaletteMaterial002} scale={0.5} position={[-10, -1, -2.635]} />
-      <mesh geometry={nodes.Trees_Green2_0.geometry} material={materials.PaletteMaterial003} scale={0.5} position={[-10, -1, -2.635]} />
-      <mesh geometry={nodes.Trees_Trunk_0.geometry} material={nodes.Trees_Trunk_0.material} scale={0.5} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.geo1_Wood_0.geometry} material={materials.PaletteMaterial001} scale={0.25} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Terrain_Water1_0.geometry} material={materials.PaletteMaterial002} scale={0.25} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Trees_Green2_0.geometry} material={materials.PaletteMaterial003} scale={0.25} position={[-10, -1, -2.635]} />
+      <mesh geometry={nodes.Trees_Trunk_0.geometry} material={nodes.Trees_Trunk_0.material} scale={0.25} position={[-10, -1, -2.635]} />
     </group>
   );
 }
