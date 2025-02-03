@@ -40,8 +40,8 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const { actions } = useAnimations(animations, group)
 
   Object.values(materials).forEach((material) => {
-    material.roughness = 0.6; 
-    material.metalness = 0.5; 
+    material.roughness = 0.9; 
+    material.metalness = 0.6; 
   })
 
   React.useEffect(() => {
@@ -51,7 +51,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   }, [actions])
 
   return (
-    <RigidBody colliders="trimesh" lockRotations={true}>
+    <RigidBody colliders="trimesh" lockRotations={true} scale={1.8} type="fixed">
       <group ref={group} {...props} dispose={null}>
         <group name="Sketchfab_Scene">
           <group name="_12" rotation={[-Math.PI, -0.005, Math.PI]}>

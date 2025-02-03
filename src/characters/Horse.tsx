@@ -4,6 +4,9 @@ import Horse from "../models/Horse";
 import { Html } from "@react-three/drei";
 import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
+import voiceline from "../assets/sfx/horse.mp3";
+
+const voicelineAudio = new Audio(voiceline);
 
 type Action =
   | "CharacterArmature|Death"
@@ -25,11 +28,13 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function RealEstate({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
+export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
   const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
   const CHARACTER_NAME = "Horse";
 
   const handleCharacterClicked = () => {
+    voicelineAudio.volume = 1;
+    voicelineAudio.play();
     console.log("Character clicked");
     // dont allow convo to be opened if it has already been seen
     if (seenCharacters.includes(CHARACTER_NAME)) return;
@@ -42,7 +47,7 @@ export default function RealEstate({ position, rotation, action }: { position: [
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
     <group position={position} rotation={rotation} onClick={handleCharacterClicked}>
-      <Html position={[0, 3.5, 0]} center scale={0.05}>
+      <Html position={[0, 5.5, 0]} center scale={0.05}>
         <div className="relative select-none">
           <div className="bg-white px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200">
             <div
@@ -70,7 +75,7 @@ export default function RealEstate({ position, rotation, action }: { position: [
       </Html>
       <Proximity
         onEnter={() => {
-          //console.log("In");
+          console.log("In");
           setCurrentAction("CharacterArmature|Wave");
         }}
         onLeave={() => {

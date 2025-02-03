@@ -27,6 +27,7 @@
 
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
+import { useConvoStore } from '../utils/convoHelper'
 
 // =========================================
 // Message interface used for chat history.
@@ -61,6 +62,8 @@ export interface CareerAnswerRecord {
 // Zustand store state interface.
 // ==============================
 interface ConversationState {
+  part: number; 
+  incrementPart: () => void;
   conversationHistory: Message[];
   addMessage: (msg: Message) => void;
   coreInfo: CoreInfo;
@@ -68,7 +71,7 @@ interface ConversationState {
   careerQuestions: string[];
   addCareerQuestions: (questions: string[]) => void;
   careerAnswers: CareerAnswerRecord[];
-  addCareerAnswer: (record: CareerAnswerRecord) => void;
+  addCareerAnswer: (records: CareerAnswerRecord[]) => void; 
 }
 
 // --------------------
@@ -105,9 +108,14 @@ const useConversationStore = create<ConversationState>((set) => ({
       careerQuestions: [...state.careerQuestions, ...questions],
     })),
   careerAnswers: [],
-  addCareerAnswer: (record: CareerAnswerRecord) =>
+  addCareerAnswer: (records: CareerAnswerRecord[]) =>
     set((state) => ({
-      careerAnswers: [...state.careerAnswers, record],
+      careerAnswers: [...state.careerAnswers, ...records],
+    })),
+  part: 1,
+  incrementPart: () =>
+    set((state) => ({
+      part: state.part + 1,
     })),
 }));
 
@@ -137,39 +145,104 @@ export async function summarizeResponse(response: string): Promise<string> {
 
 export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2: string; q3: string }> {
   const store = useConversationStore.getState();
+  const convoStore = useConvoStore.getState(); 
 
+  const currentPart = store.part;
   const previousQuestions = store.careerQuestions.join("\n");
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    Based on the user's previous interactions, please generate three new, unique questions about their career path.
-    Do not repeat any questions that have already been asked.
+    You are an expert AI career advisor guiding the user through a structured five-part conversation to identify their best-fit career path.
+    This process involves 15 targeted questions over 5 stages, rapidly narrowing down career options.
 
-    Previously asked questions:
-    ${previousQuestions}
+    The first 3 answers include critical information on the type of person you're talking to.
 
-    User responses:
-    ${previousAnswers}
+    **CURRENT STAGE: Stage ${currentPart}/5**
+    
+    **STRICT RULES:**
+    - You MUST output exactly three (3) career-related questions.
+    - Each question MUST be on its own line with NO extra text, explanations, formatting, or additional context.
+    - The conversation MUST progress logically: 
+        - **Stage 1 (Interest Discovery - Questions 1-3):** Identify passions, hobbies, and natural skills.
+        - **Stage 2 (Work Preferences - Questions 4-6):** Hands-on vs. theoretical, teamwork vs. solo, structured vs. flexible environments.
+        - **Stage 3 (Career Direction - Questions 7-9):** Suggest broad career categories based on interests and preferences.
+        - **Stage 4 (Refinement - Questions 10-12):** Narrow down to specific roles within a field, discussing daily responsibilities.
+        - **Stage 5 (Realities - Questions 13-15):** Cover job stability, salary expectations, required education, and long-term growth.
 
-    Next career-related questions (each on a new line):
-  `;
+    **USER CONTEXT:**
+    - Previously asked questions:
+      ${previousQuestions}
+    - User responses:
+      ${previousAnswers}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response: any = await sendChatMessage(prompt);
-  console.log("Generated next career path questions:", response);
+    **JIBBERISH HANDLING:**
+    - If the user's responses are unclear, random, or completely unrelated to career discussions, DEFAULT to suggesting careers in Technology.
+    - DO NOT state that you are defaulting to technology. Instead, **immediately generate three real technology career-related questions** as if the user showed interest in tech.
 
-  const questions = response
-    .split('\n')
-    .map((q: string) => q.trim())
-    .filter((q: string) => q.length > 0);
+    **INSTRUCTIONS:**
+    - Use the user’s answers to determine which careers best fit them.
+    - By the end of Stage 2, you MUST suggest at least one real career category (e.g., Engineering, Healthcare, Business).
+    - By Stage 3, you MUST suggest specific job titles (e.g., Software Engineer, Nurse, Data Scientist).
+    - By Stage 4, if the user’s responses align with multiple careers, guide them toward making a choice.
+    - By Stage 5, questions should focus on real-world considerations like salary, required education, and job stability.
 
-  store.addCareerQuestions(questions);
+    **GENERATE THE NEXT THREE QUESTIONS STRICTLY FOLLOWING THE FORMAT BELOW:**
+    - Each question should be SHORT, DIRECT, and focused on quickly guiding the user to a specific career.
+    - Do NOT repeat previously asked questions.
+    - Do NOT provide any explanations or context.
 
-  return {
-    q1: questions[0] || "",
-    q2: questions[1] || "",
-    q3: questions[2] || ""
-  };
+    **NEXT THREE QUESTIONS (one question per new line, NO extra text before the first question or after the last):**
+`.trim();
+
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = await sendChatMessage(prompt);
+
+    if (typeof response !== "string") {
+      console.error("Invalid response format:", response);
+      throw new Error("sendChatMessage did not return a string");
+    }
+
+    console.log("Generated next career path questions:", response);
+
+    const questions = response
+      .split("\n")
+      .map((q: string) => q.trim())
+      .filter((q: string) => q.length > 0);
+
+    if (questions.length !== 3) {
+      console.warn(`Expected 3 questions, but got ${questions.length}. Using fallback.`);
+
+      convoStore.updateQuestions(`part${store.part}`, {
+        q1: questions[0],
+        q2: questions[1],
+        q3: questions[2],
+      });
+      return {
+        q1: "What subjects or activities do you enjoy the most?",
+        q2: "Do you prefer working with people, technology, or data?",
+        q3: "Would you rather work in a structured office environment or a more flexible setting?"
+      };
+    }
+
+    store.addCareerQuestions(questions);
+
+    convoStore.updateQuestions(`part${store.part}`, {
+      q1: questions[0],
+      q2: questions[1],
+      q3: questions[2],
+    });
+
+    return {
+      q1: questions[0] || "",
+      q2: questions[1] || "",
+      q3: questions[2] || ""
+    };
+  } catch (error) {
+    console.error("Error requesting career path questions:", error);
+    return { q1: "", q2: "", q3: "" };
+  }
 }
 
 
@@ -177,30 +250,36 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
 // Submit an Answer for the Next Question
 // --------------------
 
-export async function submitAnswer(answer: string): Promise<void> {
+export async function submitAnswers({ a1, a2, a3 }: { a1: string; a2: string; a3: string }): Promise<void> {
   const store = useConversationStore.getState();
 
-  if (store.careerQuestions.length === 0) {
-    console.error("No pending question available to answer.");
+  const answers = [a1, a2, a3].filter(answer => answer.trim() !== "");
+
+  if (store.careerQuestions.length < answers.length) {
     return;
   }
 
-  const question = store.careerQuestions.shift() as string;
+  const records: CareerAnswerRecord[] = [];
+  const currentPart = store.part;
 
-  const promptId = Date.now().toString();
+  for (let i = 0; i < answers.length; i++) {
+    const question = store.careerQuestions.shift() as string;
+    const promptId = `${Date.now()}-part${currentPart}`;
 
-  const summary = await summarizeResponse(answer);
+    const summary = await summarizeResponse(answers[i]);
 
-  const record = {
-    promptId,
-    question,
-    answer,
-    summary,
-  };
+    records.push({
+      promptId,
+      question,
+      answer: answers[i],
+      summary,
+    });
+  }
 
-  store.addCareerAnswer(record);
+  store.addCareerAnswer(records);
+  store.incrementPart();
+  console.log(store.part)
 }
-
 // --------------------
 // Default Export
 // --------------------
