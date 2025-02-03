@@ -25,7 +25,7 @@ export default function App() {
   const handleUserInteraction = () => {
     if (!audioPlayed) {
       const audio = new Audio(global);
-      audio.volume = 0.5;
+      audio.volume = 0.1;
       audio.loop = true;
       audio.play().catch((error) => {
         console.error("Audio play error:", error);
