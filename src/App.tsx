@@ -15,8 +15,7 @@ import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversation
 import HashLoader from "react-spinners/HashLoader";
 import { getCareerMatchResults } from "./ai/careerMatch";
 import TreeComponent from "./utils/tree";
-import { incrementPart } from '../ai/conversationStore';
-
+import { incrementPart } from "../ai/conversationStore";
 
 export default function App() {
   const { convoActive } = useConvoStore();
@@ -120,7 +119,7 @@ export default function App() {
 function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => void }) {
   const [page, setPage] = useState(1);
   const [age, setAge] = useState("18");
-  const [status, setStatus] = useState("Undergrad Student");
+  const [status, setStatus] = useState("General professional worker");
   const [goal, setGoal] = useState("");
 
   const handleGameStart = () => {
@@ -178,12 +177,12 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
                 <option value="Undergrad Student" disabled>
                   Select status
                 </option>
-                <option value="student">High School Student</option>
-                <option value="student">Undergraduate Student</option>
-                <option value="student">Graduate Student</option>
-                <option value="teacher">New-Grad</option>
-                <option value="admin">Professional</option>
-                <option value="admin">Senior Professional</option>
+                <option value="High School Student">High School Student</option>
+                <option value="Undergraduate Student">Undergraduate Student</option>
+                <option value="Graduate Student">Graduate Student</option>
+                <option value="New Grad">New-Grad</option>
+                <option value="Professional">Professional</option>
+                <option value="Senior Professional">Senior Professional</option>
               </select>
             </div>
             <div>

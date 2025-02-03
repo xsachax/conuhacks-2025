@@ -28,7 +28,6 @@ export async function getCareerMatchResults(): Promise<{
       - Based on the user's answers, select the **top 3 career matches**.
       - For each job, assign an **accuracy score (out of 100)** based on how well it fits the user's responses.
       - Identify the **top 3 decision-making criteria** that influenced your selection.
-      - Include a small biais towards Software Engineering and Computer Science related positions.
       - Return ONLY the following format with NO extra text, explanations, or formatting:
   
       job1: [Top Career 1]
@@ -153,7 +152,7 @@ export async function getRelatedPositions(): Promise<{
 
     console.log("Generated Related Positions:", relatedPositions);
 
-    const createIndeedUrl = (jobTitle: string) => `https://ca.indeed.com/jobs?q=${jobTitle.replace(/\s+/g, '+')}`;
+    const createIndeedUrl = (jobTitle: string) => `https://ca.indeed.com/jobs?q=${jobTitle.replace(/\s+/g, "+")}`;
 
     return {
       originalJob1: gameResults.job1,
@@ -164,13 +163,13 @@ export async function getRelatedPositions(): Promise<{
       originalJob2: gameResults.job2,
       relatedJob2a: relatedPositions.relatedJob2 || "Solution Architect",
       relatedJob2aPosting: createIndeedUrl(relatedPositions.relatedJob2 || "Solution Architect"),
-      relatedJob2b: relatedPositions.relatedJob2 || "VP Technology",
-      relatedJob2bPosting: createIndeedUrl(relatedPositions.relatedJob2 || "VP Technology"),
+      relatedJob2b: relatedPositions.relatedJob2 || "Team Manager",
+      relatedJob2bPosting: createIndeedUrl(relatedPositions.relatedJob2 || "Project Manager"),
       originalJob3: gameResults.job3,
       relatedJob3a: relatedPositions.relatedJob3 || "System Design Engineer",
-      relatedJob3aPosting: createIndeedUrl(relatedPositions.relatedJob3 || "System Design Engineer"),
-      relatedJob3b: relatedPositions.relatedJob3 || "Database Administrator",
-      relatedJob3bPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Database Administrator"),
+      relatedJob3aPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Product Manager"),
+      relatedJob3b: relatedPositions.relatedJob3 || "Scrum Leader",
+      relatedJob3bPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Consultant"),
     };
   } catch (error) {
     console.error("Error fetching related positions:", error);
@@ -183,12 +182,12 @@ export async function getRelatedPositions(): Promise<{
       originalJob2: gameResults.job2,
       relatedJob2a: "Solution Architect",
       relatedJob2aPosting: "https://ca.indeed.com",
-      relatedJob2b: "VP Technology",
+      relatedJob2b: "Project Manager",
       relatedJob2bPosting: "https://ca.indeed.com",
       originalJob3: gameResults.job3,
-      relatedJob3a: "System Design Engineer",
+      relatedJob3a: "Product Manager",
       relatedJob3aPosting: "https://ca.indeed.com",
-      relatedJob3b: "Database Administrator",
+      relatedJob3b: "Consultant",
       relatedJob3bPosting: "https://ca.indeed.com",
     };
   }
