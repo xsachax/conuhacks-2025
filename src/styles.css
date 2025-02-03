@@ -6,3 +6,16 @@ body,
   height: 100%;
   margin: unset;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 5s ease-in-out;
+}

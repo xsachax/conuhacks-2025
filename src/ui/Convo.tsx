@@ -1,27 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useConvoStore } from "../utils/convoHelper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { startSpeechToText } from "../speech_recognition/speechToText";
 import garfield from "../assets/garfield.jpg";
 import steve from "../assets/steve.jpg";
-import wario from "../assets/wario.png";
+import krabs from "../assets/krabs.png";
 import yoda from "../assets/yoda.jpg";
 import horse from "../assets/horse.jpg";
 import finish from "../assets/sfx/finish.mp3";
 import { Typewriter } from "react-simple-typewriter";
 import { requestNextCareerPathQuestions, submitAnswers } from "../ai/conversationStore";
+import { useGameStore } from "../utils/gameStore";
+import "./Convo.css";
 
 const finishAudio = new Audio(finish);
 
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
   const [inputFieldValue, setInputFieldValue] = useState<string>("");
+  const [animationClass, setAnimationClass] = useState<string>("");
+
+  useEffect(() => {
+    if (convoActive) {
+      setAnimationClass("flip-in slide-in");
+    }
+  }, [convoActive]);
 
   const characterMap = {
     Garfield: garfield,
     Steve: steve,
-    Wario: wario,
+    Krabs: krabs,
     Yoda: yoda,
     Horse: horse,
   };
@@ -29,7 +38,7 @@ export default function Convo() {
   const initialCharacterMessages = {
     Garfield: "I hate Mondays. <br/><br/><strong>But I can show you how to enjoy them!</strong>",
     Steve: "Hello, my name is Steve. <br/><br/><strong>I'm still looking for my career treasure!</strong>",
-    Wario: "Wahhhhh. <br/><br/><strong>I'm Wario. I'm-a gonna help you win!</strong>",
+    Krabs: "Wahhhhh. <br/><br/><strong>Money money money money!</strong>",
     Yoda: "Do or do not, there is no try. <br/><br/><strong>I can help you find your path.</strong>",
     Horse: "Howdy. <br/><br/><strong>I'm a horse. I can help you find your inner strength.</strong>",
   };
@@ -47,6 +56,7 @@ export default function Convo() {
       clearConvo(true);
       finishAudio.play();
       submitAnswers(answers[`part${currentPart}`]);
+      useGameStore.getState().incrementProgress();
       requestNextCareerPathQuestions();
     }
     setInputFieldValue("");
@@ -69,9 +79,9 @@ export default function Convo() {
   };
 
   return (
-    <div className="fixed inset-0 z-[999999999] flex items-center justify-center">
+    <div className={`fixed inset-0 z-[999999999] flex items-center justify-center`}>
       <div className="absolute inset-0 bg-black/50" onClick={handleBackdropClick} onKeyDown={handleBackdropClick} role="button" tabIndex={0} aria-label="Close convo" />
-      <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible">
+      <div className="relative bg-white rounded-lg p-8 max-w-2xl w-full mx-4 space-y-8 overflow-visible slide-in">
         {/* Character image and name */}
         <div className="flex items-center space-x-4 absolute top-0 left-0 transform -translate-x-1/3 -translate-y-1/3">
           <img

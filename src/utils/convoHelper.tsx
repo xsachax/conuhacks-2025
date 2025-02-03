@@ -9,7 +9,8 @@ interface ConvoState {
   seenCharacters: string[];
   setConvoActive: (convo: boolean) => void;
   clearConvo: () => void;
-  updateQuestion: (part: string, qNumber: string, question: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateQuestions: (part: string, question: any) => void;
   setCurrentQuestion: (question: number) => void;
   setCurrentPart: (part: number) => void;
 }
@@ -49,29 +50,29 @@ export const useConvoStore = create<ConvoState>()((set) => ({
   },
   questions: {
     part1: {
-      q1: "Part 1, Question 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      q2: "Part 1, Question 2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      q3: "Part 1, Question 3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+      q1: "What are your favorite hobbies or activities that you enjoy in your free time?",
+      q2: "What subjects or topics are you naturally curious about or interested in?",
+      q3: "What skills or talents do you feel you excel at without much effort?",
     },
     part2: {
-      q1: "Part 2, Question 1: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
-      q2: "Part 2, Question 2: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      q3: "Part 2, Question 3: Deserunt mollit anim id est laborum.",
+      q1: "Do you prefer working on hands-on projects or theoretical concepts?",
+      q2: "Do you enjoy working in a team or do you prefer working alone?",
+      q3: "Do you thrive in a structured environment or a more flexible one?",
     },
     part3: {
-      q1: "Part 3, Question 1: Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.",
-      q2: "Part 3, Question 2: Nullam varius, turpis et commodo pharetra, est eros bibendum elit.",
-      q3: "Part 3, Question 3: Velit egestas dui id ornare arcu odio ut sem nulla.",
+      q1: "Based on your interests, would you prefer a career in technology, healthcare, arts, or another field?",
+      q2: "Do you see yourself in a creative role, analytical role, or a mix of both?",
+      q3: "Are you more interested in a career that involves problem-solving, helping others, or creating something new?",
     },
     part4: {
-      q1: "Part 4, Question 1: Amet consectetur adipiscing elit pellentesque habitant morbi tristique.",
-      q2: "Part 4, Question 2: Senectus et netus et malesuada fames ac turpis egestas.",
-      q3: "Part 4, Question 3: Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet.",
+      q1: "Within your chosen field, are there specific roles that you find particularly appealing?",
+      q2: "What daily responsibilities or tasks do you think you would enjoy in your ideal job?",
+      q3: "Are there any specific industries or companies you are particularly interested in working for?",
     },
     part5: {
-      q1: "Part 5, Question 1: Ante in nibh mauris cursus mattis molestie a iaculis.",
-      q2: "Part 5, Question 2: Arcu odio ut sem nulla pharetra diam sit amet.",
-      q3: "Part 5, Question 3: Eget nullam non nisi est sit amet facilisis magna.",
+      q1: "How important is job stability and security to you in your career?",
+      q2: "What are your salary expectations for your ideal job?",
+      q3: "Are you willing to pursue additional education or certifications to achieve your career goals?",
     },
   },
 
@@ -98,10 +99,9 @@ export const useConvoStore = create<ConvoState>()((set) => ({
           },
     })),
 
-  updateQuestion: (part, qNumber, question) =>
-    set((state) => {
-      const newQuestions = { ...state.questions };
-      newQuestions[part][qNumber] = question;
+  updateQuestions: (part, questions) =>
+    set((prevState) => {
+      const newQuestions = { ...prevState.questions, [part]: questions };
       return { questions: newQuestions };
     }),
 

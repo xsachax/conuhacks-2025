@@ -27,6 +27,7 @@
 
 import { create } from 'zustand';
 import { sendChatMessage } from './sendChatMessage';
+import { useConvoStore } from '../utils/convoHelper'
 
 // =========================================
 // Message interface used for chat history.
@@ -144,27 +145,55 @@ export async function summarizeResponse(response: string): Promise<string> {
 
 export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2: string; q3: string }> {
   const store = useConversationStore.getState();
+  const convoStore = useConvoStore.getState(); 
 
+  const currentPart = store.part;
   const previousQuestions = store.careerQuestions.join("\n");
   const previousAnswers = store.careerAnswers.map(record => record.answer).join("\n");
 
   const prompt = `
-    You are a career advisor AI. Your task is to generate exactly three (3) new, unique, career-related questions for the user.
+    You are an expert AI career advisor guiding the user through a structured five-part conversation to identify their best-fit career path.
+    This process involves 15 targeted questions over 5 stages, rapidly narrowing down career options.
 
-    Follow these strict rules:
-    - Output only the three questions.
-    - Each question must be on its own line.
-    - Do NOT include any extra text, explanations, or formatting.
-    - Ensure the questions are different from previously asked ones.
+    The first 3 answers include critical information on the type of person you're talking to.
 
-    Previous questions:
-    ${previousQuestions}
+    **CURRENT STAGE: Stage ${currentPart}/5**
+    
+    **STRICT RULES:**
+    - You MUST output exactly three (3) career-related questions.
+    - Each question MUST be on its own line with NO extra text, explanations, formatting, or additional context.
+    - The conversation MUST progress logically: 
+        - **Stage 1 (Interest Discovery - Questions 1-3):** Identify passions, hobbies, and natural skills.
+        - **Stage 2 (Work Preferences - Questions 4-6):** Hands-on vs. theoretical, teamwork vs. solo, structured vs. flexible environments.
+        - **Stage 3 (Career Direction - Questions 7-9):** Suggest broad career categories based on interests and preferences.
+        - **Stage 4 (Refinement - Questions 10-12):** Narrow down to specific roles within a field, discussing daily responsibilities.
+        - **Stage 5 (Realities - Questions 13-15):** Cover job stability, salary expectations, required education, and long-term growth.
 
-    User responses:
-    ${previousAnswers}
+    **USER CONTEXT:**
+    - Previously asked questions:
+      ${previousQuestions}
+    - User responses:
+      ${previousAnswers}
 
-    Provide exactly three career-related questions (one per line) below:
-  `.trim();
+    **JIBBERISH HANDLING:**
+    - If the user's responses are unclear, random, or completely unrelated to career discussions, DEFAULT to suggesting careers in Technology.
+    - DO NOT state that you are defaulting to technology. Instead, **immediately generate three real technology career-related questions** as if the user showed interest in tech.
+
+    **INSTRUCTIONS:**
+    - Use the user’s answers to determine which careers best fit them.
+    - By the end of Stage 2, you MUST suggest at least one real career category (e.g., Engineering, Healthcare, Business).
+    - By Stage 3, you MUST suggest specific job titles (e.g., Software Engineer, Nurse, Data Scientist).
+    - By Stage 4, if the user’s responses align with multiple careers, guide them toward making a choice.
+    - By Stage 5, questions should focus on real-world considerations like salary, required education, and job stability.
+
+    **GENERATE THE NEXT THREE QUESTIONS STRICTLY FOLLOWING THE FORMAT BELOW:**
+    - Each question should be SHORT, DIRECT, and focused on quickly guiding the user to a specific career.
+    - Do NOT repeat previously asked questions.
+    - Do NOT provide any explanations or context.
+
+    **NEXT THREE QUESTIONS (one question per new line, NO extra text before the first question or after the last):**
+`.trim();
+
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -183,10 +212,27 @@ export async function requestNextCareerPathQuestions(): Promise<{ q1: string; q2
       .filter((q: string) => q.length > 0);
 
     if (questions.length !== 3) {
-      throw new Error(`Expected 3 questions, but got ${questions.length}`);
+      console.warn(`Expected 3 questions, but got ${questions.length}. Using fallback.`);
+
+      convoStore.updateQuestions(`part${store.part}`, {
+        q1: questions[0],
+        q2: questions[1],
+        q3: questions[2],
+      });
+      return {
+        q1: "What subjects or activities do you enjoy the most?",
+        q2: "Do you prefer working with people, technology, or data?",
+        q3: "Would you rather work in a structured office environment or a more flexible setting?"
+      };
     }
 
     store.addCareerQuestions(questions);
+
+    convoStore.updateQuestions(`part${store.part}`, {
+      q1: questions[0],
+      q2: questions[1],
+      q3: questions[2],
+    });
 
     return {
       q1: questions[0] || "",
@@ -232,6 +278,7 @@ export async function submitAnswers({ a1, a2, a3 }: { a1: string; a2: string; a3
 
   store.addCareerAnswer(records);
   store.incrementPart();
+  console.log(store.part)
 }
 // --------------------
 // Default Export
