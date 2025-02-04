@@ -67,14 +67,14 @@ type GLTFResult = GLTF & {
 }
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
-  const group = React.useRef<THREE.Group>()
+  const group = React.useRef<THREE.Group>(null)
   const { scene, animations } = useGLTF('/models/yoda-transformed.glb')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone) as GLTFResult
   const { actions } = useAnimations(animations, group)
   Object.values(materials).forEach((material) => {
-    material.roughness = 0.9; 
-    material.metalness = 0.1; 
+    material.roughness = 1; 
+    material.metalness = -1; 
   })
 
   React.useEffect(() => {

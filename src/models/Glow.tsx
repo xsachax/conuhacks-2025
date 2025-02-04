@@ -33,7 +33,7 @@ type GLTFResult = GLTF & {
 };
 
 export default function Model(props: JSX.IntrinsicElements["group"]) {
-  const group = React.useRef<THREE.Group>();
+  const group = React.useRef<THREE.Group>(null)
   const { scene, animations } = useGLTF("/models/glow-transformed.glb");
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes, materials } = useGraph(clone) as GLTFResult;

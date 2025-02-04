@@ -6,13 +6,15 @@ interface ConvoState {
   currentPart: number;
   currentQuestion: number;
   questions: Record<string, Record<string, string>>;
+  answers: Record<string, Record<string, string>>;
   seenCharacters: string[];
   setConvoActive: (convo: boolean) => void;
-  clearConvo: () => void;
+  clearConvo: (properExit: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateQuestions: (part: string, question: any) => void;
   setCurrentQuestion: (question: number) => void;
   setCurrentPart: (part: number) => void;
+  setCurrentCharacterName: (name: string) => void;
 }
 
 export const useConvoStore = create<ConvoState>()((set) => ({
@@ -107,10 +109,10 @@ export const useConvoStore = create<ConvoState>()((set) => ({
 
   setCurrentQuestion: (question) => set({ currentQuestion: question }),
   setCurrentPart: (part) => set({ currentPart: part }),
-  addSeenCharacter: (character) =>
+  addSeenCharacter: (character: any) =>
     set((state) => {
       const newSeenCharacters = [...state.seenCharacters, character];
       return { seenCharacters: newSeenCharacters };
     }),
-  setCurrentCharacterName: (name) => set({ currentCharacterName: name }),
+  setCurrentCharacterName: (name: any) => set({ currentCharacterName: name }),
 }));

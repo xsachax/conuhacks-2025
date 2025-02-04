@@ -19,7 +19,7 @@ const finishAudio = new Audio(finish);
 export default function Convo() {
   const { convoActive, currentCharacterName, currentPart, currentQuestion, setCurrentQuestion, clearConvo, questions, answers } = useConvoStore();
   const [inputFieldValue, setInputFieldValue] = useState<string>("");
-  const [animationClass, setAnimationClass] = useState<string>("");
+  const [, setAnimationClass] = useState<string>("");
 
   useEffect(() => {
     if (convoActive) {
@@ -27,7 +27,7 @@ export default function Convo() {
     }
   }, [convoActive]);
 
-  const characterMap = {
+  const characterMap: Record<string, string> = {
     Garfield: garfield,
     Steve: steve,
     Krabs: krabs,
@@ -35,7 +35,7 @@ export default function Convo() {
     Horse: horse,
   };
 
-  const initialCharacterMessages = {
+  const initialCharacterMessages: Record<string, string> = {
     Garfield: "I hate Mondays. <br/><br/><strong>But I can show you how to enjoy them!</strong>",
     Steve: "Hello, my name is Steve. <br/><br/><strong>I'm still looking for my career treasure!</strong>",
     Krabs: "Wahhhhh. <br/><br/><strong>Money money money money!</strong>",
@@ -55,7 +55,7 @@ export default function Convo() {
       // Part successfully completed
       clearConvo(true);
       finishAudio.play();
-      submitAnswers(answers[`part${currentPart}`]);
+      submitAnswers({ a1: answers[`part${currentPart}`].a1, a2: answers[`part${currentPart}`].a2, a3: answers[`part${currentPart}`].a3 });
       useGameStore.getState().incrementProgress();
       requestNextCareerPathQuestions();
     }

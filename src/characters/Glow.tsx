@@ -2,7 +2,6 @@ import { useState } from "react";
 import Proximity from "../utils/Proximity";
 import Glow from "../models/Glow";
 import { Html } from "@react-three/drei";
-import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
 import voiceline from "../assets/sfx/glow.mp3";
 import { useGameStore } from "../utils/gameStore";
@@ -29,8 +28,8 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
-  const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
+export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; }) {
+  const [] = useState<Action>(action || "CharacterArmature|HitReact");
   const CHARACTER_NAME = "Glow";
   const { isGameEnded, setGameEnded } = useGameStore();
 
@@ -56,20 +55,25 @@ export default function Character({ position, rotation, action }: { position: [n
             if (isGameEnded) return;
             setGameEnded(true);
           }}
+          onLeave={() => {
+            console.log("Left glow proximity");
+          }}
           endgame={true}
         >
-          <Html position={[0.25, 4.5, 0]} center scale={0.05}>
-            <div className="relative select-none">
-              <div
-                className={`px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200 ${
-                  seenCharacters.includes(CHARACTER_NAME) ? "bg-green-500" : "bg-red-500"
-                }`}
-              >
-                <div className="text-2xl font-black text-white">✔</div>
+          <>
+            <Html position={[0.25, 4.5, 0]} center scale={0.05}>
+              <div className="relative select-none">
+                <div
+                  className={`px-4 py-2 rounded-2xl shadow-xl relative text-center border-2 border-gray-200 ${
+                    seenCharacters.includes(CHARACTER_NAME) ? "bg-green-500" : "bg-red-500"
+                  }`}
+                >
+                  <div className="text-2xl font-black text-white">✔</div>
+                </div>
               </div>
-            </div>
-          </Html>
-          <Glow action={currentAction} />
+            </Html>
+            <Glow />
+          </>
         </Proximity>
       </group>
     )

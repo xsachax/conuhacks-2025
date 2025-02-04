@@ -5,7 +5,6 @@ Files: heaven.glb [35.16MB] > /Users/sacha/Developer/Hackathons/ConUHacks2025/co
 */
 
 import * as THREE from "three";
-import React from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
@@ -21,7 +20,6 @@ type GLTFResult = GLTF & {
     PaletteMaterial002: THREE.MeshStandardMaterial;
     PaletteMaterial003: THREE.MeshStandardMaterial;
   };
-  animations: GLTFAction[];
 };
 
 export default function Model(props: JSX.IntrinsicElements["group"]) {

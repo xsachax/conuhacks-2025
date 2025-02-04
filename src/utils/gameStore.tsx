@@ -12,7 +12,23 @@ interface GameResults {
   criteria3: string;
 }
 
-export const useGameStore = create<ConvoState>()((set) => ({
+interface GameStore {
+  isGameStarted: boolean;
+  isGameReadyToEnd: boolean;
+  isGameEnded: boolean;
+  progress: number;
+  gameResults: GameResults;
+  gameResultsAcquired: boolean;
+  setProgress: (progress: number) => void;
+  setGameStarted: (isGameStarted: boolean) => void;
+  incrementProgress: () => void;
+  setGameReadyToEnd: (isGameReadyToEnd: boolean) => void;
+  setGameEnded: (isGameEnded: boolean) => void;
+  setGameResultsAcquired: (gameResultsAcquired: boolean) => void;
+  setGameResults: (gameResults: GameResults) => void;
+}
+
+export const useGameStore = create<GameStore>()((set) => ({
   isGameStarted: false,
   isGameReadyToEnd: false,
   isGameEnded: false,
@@ -36,6 +52,6 @@ export const useGameStore = create<ConvoState>()((set) => ({
   incrementProgress: () => set((state) => ({ progress: state.progress + 1, isGameReadyToEnd: state.progress + 1 >= 5 })),
   setGameReadyToEnd: (isGameReadyToEnd: boolean) => set({ isGameReadyToEnd }),
   setGameEnded: (isGameEnded: boolean) => set({ isGameEnded }),
-  setGameResultsAcquired: (gameResultsAquired: boolean) => set({ gameResultsAquired }),
-  setGameResults: (gameResults: { any }) => set({ gameResults }),
+  setGameResultsAcquired: (gameResultsAcquired: boolean) => set({ gameResultsAcquired }),
+  setGameResults: (gameResults: GameResults) => set({ gameResults }),
 }));

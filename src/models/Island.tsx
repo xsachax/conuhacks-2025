@@ -9,7 +9,6 @@ Title: Low poly floating island
 */
 
 import * as THREE from "three";
-import React from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
@@ -22,7 +21,6 @@ type GLTFResult = GLTF & {
     PaletteMaterial001: THREE.MeshStandardMaterial;
     PaletteMaterial002: THREE.MeshStandardMaterial;
   };
-  animations: GLTFAction[];
 };
 
 export default function Model(props: JSX.IntrinsicElements["group"]) {

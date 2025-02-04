@@ -40,8 +40,8 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const { actions } = useAnimations(animations, group)
 
   Object.values(materials).forEach((material) => {
-    material.roughness = 0.9; 
-    material.metalness = 0.6; 
+    material.roughness = 1; 
+    material.metalness = 0.5; 
   })
 
   React.useEffect(() => {

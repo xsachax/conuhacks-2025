@@ -67,7 +67,7 @@ const TreeComponent: React.FC = () => {
     fetchData();
   }, []);
 
-  const onNodeClick = (event: React.MouseEvent, node: Node) => {
+  const onNodeClick = (_event: React.MouseEvent, node: Node) => {
     setSelectedNodeData(node.data); 
   };
 

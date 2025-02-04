@@ -15,12 +15,11 @@ import { requestNextCareerPathQuestions, submitAnswers } from "./ai/conversation
 import HashLoader from "react-spinners/HashLoader";
 import { getCareerMatchResults } from "./ai/careerMatch";
 import TreeComponent from "./utils/tree";
-import { incrementPart } from "../ai/conversationStore";
 
 export default function App() {
   const { convoActive } = useConvoStore();
   const [audioPlayed, setAudioPlayed] = useState(false);
-  const { isGameStarted, setGameStarted, isGameEnded, setGameEnded, progress } = useGameStore();
+  const { isGameStarted, setGameStarted, isGameEnded, progress } = useGameStore();
 
   const handleUserInteraction = () => {
     if (!audioPlayed) {
@@ -208,7 +207,7 @@ function StartScreen({ setGameStarted }: { setGameStarted: (value: boolean) => v
 function ResultsScreen() {
   const [page, setPage] = useState(1);
 
-  const { gameResults, setGameResults, gameResultsAcquired, setGameResultsAcquired } = useGameStore();
+  const { gameResults, setGameResults, setGameResultsAcquired } = useGameStore();
 
   const handleFetchResults = () => {
     setPage(2);
@@ -248,7 +247,7 @@ function ResultsScreen() {
         <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
           <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
             <div className="w-1/3">
-              <CircularProgressBar percentage={gameResults.accuracy1} />
+              <CircularProgressBar percentage={parseFloat(gameResults.accuracy1)} />
             </div>
             <div className="w-2/3 text-center">
               <h2 className="text-2xl font-bold mb-2">You're an aspiring</h2>
@@ -259,11 +258,11 @@ function ResultsScreen() {
           <div className="flex justify-around mb-12 pb-8 border-b-2 border-gray-200">
             <div className="text-center flex flex-col items-center">
               <h2 className="text-xl font-semibold mb-4">{gameResults.job2}</h2>
-              <CircularProgressBar percentage={gameResults.accuracy2} size="small" />
+              <CircularProgressBar percentage={parseFloat(gameResults.accuracy2)} size="small" />
             </div>
             <div className="text-center flex flex-col items-center">
               <h2 className="text-xl font-semibold mb-4">{gameResults.job3}</h2>
-              <CircularProgressBar percentage={gameResults.accuracy3} size="small" />
+              <CircularProgressBar percentage={parseFloat(gameResults.accuracy3)} size="small" />
             </div>
           </div>
           <h2 className="text-2xl font-bold text-center mb-4">Based on your responses, you value:</h2>

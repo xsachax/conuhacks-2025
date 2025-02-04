@@ -2,7 +2,6 @@ import { useState } from "react";
 import Proximity from "../utils/Proximity";
 import Steve from "../models/Steve";
 import { Html } from "@react-three/drei";
-import type { Convo } from "../utils/convoHelper";
 import { useConvoStore } from "../utils/convoHelper";
 import voiceline from "../assets/sfx/steve.mp3";
 
@@ -28,8 +27,8 @@ type Action =
   | "CharacterArmature|Weapon"
   | "CharacterArmature|Yes";
 
-export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; convo: Convo }) {
-  const [currentAction, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
+export default function Character({ position, rotation, action }: { position: [number, number, number]; rotation: [number, number, number]; action?: Action; }) {
+  const [, setCurrentAction] = useState<Action>(action || "CharacterArmature|HitReact");
   const CHARACTER_NAME = "Steve";
 
   const handleCharacterClicked = () => {
@@ -82,7 +81,7 @@ export default function Character({ position, rotation, action }: { position: [n
           setCurrentAction("CharacterArmature|HitReact");
         }}
       >
-        <Steve action={currentAction} />
+        <Steve />
       </Proximity>
     </group>
   );

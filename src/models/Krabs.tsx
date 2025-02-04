@@ -66,13 +66,13 @@ type GLTFResult = GLTF & {
 }
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
-  const group = React.useRef<THREE.Group>()
+  const group = React.useRef<THREE.Group>(null)
   const { nodes, materials, animations } = useGLTF('/models/krabs-transformed.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
 
   Object.values(materials).forEach((material) => {
-    material.roughness = 0.6; 
-    material.metalness = 0.2; 
+    material.roughness = 1; 
+    material.metalness = 0.1; 
   })
 
   React.useEffect(() => {

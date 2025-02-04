@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { DirectionalLight } from "three";
-import { useFrame } from "@react-three/fiber";
 
 export default function Lights() {
   const lightRef = useRef<DirectionalLight>(null);
