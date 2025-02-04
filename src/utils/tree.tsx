@@ -80,14 +80,21 @@ const TreeComponent: React.FC = () => {
       </ReactFlow>
       
       {selectedNodeData && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Selected Node Data:</h3>
-          <p><strong>Label:</strong> {selectedNodeData.label}</p>
-          {selectedNodeData.url && (
-            <p><strong>Job Posting:</strong> <a href={selectedNodeData.url} target="_blank" rel="noopener noreferrer">{selectedNodeData.url}</a></p>
-          )}
-        </div>
-      )}
+  <div className="mt-8 max-w-xs">
+    <p className="font-semibold text-sm text-gray-700">
+      <strong>{selectedNodeData.label}</strong>
+    </p>
+    {selectedNodeData.url && (
+      <p className="mt-2 text-sm text-blue-500 truncate">
+        
+        <strong><a href={selectedNodeData.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+          View Job Posting
+        </a></strong>
+      </p>
+    )}
+  </div>
+)}
+
     </div>
   );
 };

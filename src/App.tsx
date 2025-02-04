@@ -286,7 +286,7 @@ function ResultsScreen() {
       ) : page === 4 ? (
         <div className="bg-white p-8 rounded-lg shadow-lg md:mx-20 mx-0">
           <h2 className="text-2xl font-bold text-center mb-4">Here is a generated tree of possible career paths:</h2>
-          <div className="flex items-center mb-12 pb-8 border-b-2 border-gray-200">
+          <div className="flex items-center mb-12 pb-8">
             <TreeComponent />
           </div>
           <div className="flex justify-between mt-8">

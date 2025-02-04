@@ -118,10 +118,16 @@ export async function getRelatedPositions(): Promise<{
     criteria3: ${gameResults.criteria3}
 
     **INSTRUCTIONS:**
-    - Based on the above jobs (job1, job2, job3) career matches and their decision-making criteria, suggest 2 other related positions of which they would be qualified for.
-    
-    Return ONLY the following format with NO extra text, explanations, or formatting:
+    - Based on the user's answers and career matches, suggest **2 related roles per original job**.
+    - Take into account career paths, including potential **promotions**, lateral moves, or specialized roles within each field (e.g., Software Developer -> Software Developer II, Senior Developer, Tech Lead, etc.).
+    - For each of the top 3 careers, provide related roles that might fit the user’s career trajectory at different stages of their development, considering factors such as:
+      - **Skill growth**: what role the user might evolve into with their skill set.
+      - **Promotions**: what higher-level positions could be a natural next step.
+      - **Specializations**: are there specialized roles or teams they could fit into (e.g., front-end, back-end, machine learning)?
+      - **Lateral career changes**: alternative roles that use similar skill sets or could be a good lateral move.
 
+    Return ONLY the following format with NO extra text, explanations, or formatting:
+    
     originalJob1: [Original Career 1]
     relatedJob1a: [Related Career 1a]
     relatedJob1b: [Related Career 1b]
@@ -161,14 +167,14 @@ export async function getRelatedPositions(): Promise<{
       relatedJob1b: relatedPositions.relatedJob1b || "SCRUM Lead",
       relatedJob1bPosting: createIndeedUrl(relatedPositions.relatedJob1b || "SCRUM Lead"),
       originalJob2: gameResults.job2,
-      relatedJob2a: relatedPositions.relatedJob2 || "Solution Architect",
+      relatedJob2a: relatedPositions.relatedJob2a || "Solution Architect",
       relatedJob2aPosting: createIndeedUrl(relatedPositions.relatedJob2 || "Solution Architect"),
-      relatedJob2b: relatedPositions.relatedJob2 || "Team Manager",
+      relatedJob2b: relatedPositions.relatedJob2b || "Team Manager",
       relatedJob2bPosting: createIndeedUrl(relatedPositions.relatedJob2 || "Project Manager"),
       originalJob3: gameResults.job3,
-      relatedJob3a: relatedPositions.relatedJob3 || "System Design Engineer",
+      relatedJob3a: relatedPositions.relatedJob3a || "System Design Engineer",
       relatedJob3aPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Product Manager"),
-      relatedJob3b: relatedPositions.relatedJob3 || "Scrum Leader",
+      relatedJob3b: relatedPositions.relatedJob3b || "Scrum Leader",
       relatedJob3bPosting: createIndeedUrl(relatedPositions.relatedJob3 || "Consultant"),
     };
   } catch (error) {
